@@ -27,11 +27,9 @@ var map = new mapboxgl.Map({
 
 //set color of marker based on feature value
 function getColor(x) {
-    return  x < 500     ?   '#bd0026':
-            x < 1000    ?   '#f03b20':
-            x < 1500    ?   '#fd8d3c':
-            x < 2000    ?   '#fecc5c':
-                            '#ffffb2' ;
+    return  x < 500     ?   'blue':
+            x > 1000    ?   'red':
+                            'grey' ;
 }
 
 // The 'building' layer in the mapbox-streets vector source contains building-height
@@ -89,7 +87,7 @@ map.on('load', function() {
                     },
                     "properties": {
                         "title": "Mapbox DC",
-                        "conductance_z": 501,
+                        "conductance_z": 499,
                         "icon": "monument"
                     }
                 }, {
