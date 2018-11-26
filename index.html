@@ -75,28 +75,43 @@ map.on('load', function() {
         }
     }, labelLayerId);
 
-    var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson';
-    map.on('load', function () {
-        window.setInterval(function() {
-            map.getSource('cyc_points').setData(url);
-        }, 2000);
-
-    map.addSource('cyc_points', { type: 'geojson', data: url });
-    map.addLayer({
-        "id": "cyc_points",
-        "type": "circle",
-        "source": "cyc_points",
-        "paint": {
+    map.on('load', function(e) {
+    map.addSource("cyc_points", {
+    "type": "geojson",
+    "data": 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson',
+    "paint": {
             "circle-radius": 7.5,
             // 'circle-radius': {
             //     'base': 1.75,
             //     'stops': [[12, 2], [22, 180]],
             "circle-color": "blue",
-            "circle-opacity": 0.6,
-            // "circle-color": this.features.map(getColor).call('cyc_points')// store json as variable, replace this with variable name
+            "circle-opacity": 0.6
         }
     });
-});
+
+
+//     var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson';
+//     map.on('load', function () {
+//         window.setInterval(function() {
+//             map.getSource('cyc_points').setData(url);
+//         }, 2000);
+
+//     map.addSource('cyc_points', { type: 'FeatureCollection', data: url });
+//     map.addLayer({
+//         "id": "cyc_points",
+//         "type": "circle",
+//         "source": "cyc_points",
+//         "paint": {
+//             "circle-radius": 7.5,
+//             // 'circle-radius': {
+//             //     'base': 1.75,
+//             //     'stops': [[12, 2], [22, 180]],
+//             "circle-color": "blue",
+//             "circle-opacity": 0.6
+//             // "circle-color": this.features.map(getColor).call('cyc_points')// store json as variable, replace this with variable name
+//         }
+//     });
+// });
 
 });
         
