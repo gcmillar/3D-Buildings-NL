@@ -26,20 +26,6 @@ var map = new mapboxgl.Map({
     container: 'map'
 });
 
-// //set color of marker based on feature value
-// function getColor(x) {
-//     return  x < 500     ?   'blue':
-//             x > 1000    ?   'red':
-//                             'grey' ;
-// }
-
-//set color of marker based on feature value
-function getColor(x) {
-    return  x.properties.conductance_z < 500     ?   'blue':
-            x.properties.conductance_z > 1000    ?   'red':
-                            'grey' ;
-}
-
 // The 'building' layer in the mapbox-streets vector source contains building-height
 // data from OpenStreetMap.
 map.on('load', function() {
