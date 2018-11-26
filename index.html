@@ -28,10 +28,17 @@ var map = new mapboxgl.Map({
 
 //set color of marker based on feature value
 function getColor(x) {
-    return  x.properties.conductance_z < 500     ?   'blue':
-            x.properties.conductance_z > 1000    ?   'red':
+    return  x < 500     ?   'blue':
+            x > 1000    ?   'red':
                             'grey' ;
 }
+
+// //set color of marker based on feature value
+// function getColor(x) {
+//     return  x.properties.conductance_z < 500     ?   'blue':
+//             x.properties.conductance_z > 1000    ?   'red':
+//                             'grey' ;
+// }
 
 // The 'building' layer in the mapbox-streets vector source contains building-height
 // data from OpenStreetMap.
@@ -123,7 +130,9 @@ map.on('load', function () {
             //     'stops': [[12, 2], [22, 180]],
             // "circle-color": expression, // "circle-color": "blue",
             "circle-opacity": 0.4,
-            "circle-color": this.features.getColor.call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
+            "circle-color": getColor.features[0].properties.conductance_z // getColor.features.properties.conductance_z
+            // e.features[0].properties.description;
+            // "circle-color": this.features.getColor.call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
         }
     });
 });
