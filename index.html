@@ -90,17 +90,17 @@ map.on('load', function() {
     // });
 
 
-    var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson';
+    var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson';
     map.on('load', function () {
         window.setInterval(function() {
-            map.getSource('pt1_test_geojson').setData(url);
+            map.getSource('pt1_test_geojson_simple').setData(url);
         }, 2000);
 
-    map.addSource('pt1_test_geojson', { type: 'geojson', data: url });
+    map.addSource('pt1_test_geojson_simple', { type: 'geojson', data: url });
     map.addLayer({
-        "id": "pt1_test_geojson",
+        "id": "pt1_test_geojson_simple",
         "type": "circle",
-        "source": "pt1_test_geojson",
+        "source": "pt1_test_geojson_simple",
         "paint": {
             "circle-radius": 7.5,
             // 'circle-radius': {
