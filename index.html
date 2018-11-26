@@ -26,19 +26,19 @@ var map = new mapboxgl.Map({
     container: 'map'
 });
 
-//set color of marker based on feature value
-function getColor(x) {
-    return  x < 500     ?   'blue':
-            x > 1000    ?   'red':
-                            'grey' ;
-}
-
 // //set color of marker based on feature value
 // function getColor(x) {
-//     return  x.properties.conductance_z < 500     ?   'blue':
-//             x.properties.conductance_z > 1000    ?   'red':
+//     return  x < 500     ?   'blue':
+//             x > 1000    ?   'red':
 //                             'grey' ;
 // }
+
+//set color of marker based on feature value
+function getColor(x) {
+    return  x.properties.conductance_z < 500     ?   'blue':
+            x.properties.conductance_z > 1000    ?   'red':
+                            'grey' ;
+}
 
 // The 'building' layer in the mapbox-streets vector source contains building-height
 // data from OpenStreetMap.
@@ -124,18 +124,106 @@ map.on('load', function () {
         "type": "circle",
         "source": "pt1_test_geojson_simple",
         "paint": {
-            "circle-radius": 7.5,
+            {
+                "circle-radius": {
+                    "base": 1.75,
+                    "stops": [
+                        // zoom is 0 and "rating" is 0 -> circle radius will be 0px
+                        [{zoom: 0}, 7],
+
+                        // zoom is 0 and "rating" is 5 -> circle radius will be 5px
+                        [{zoom: 5}, 5],
+
+                        // zoom is 20 and "rating" is 0 -> circle radius will be 0px
+                        [{zoom: 10}, 3],
+
+                        // zoom is 20 and "rating" is 5 -> circle radius will be 20px
+                        [{zoom: 20}, 1.75]
+                    ]
+                }
+            }
             // 'circle-radius': {
             //     'base': 1.75,
             //     'stops': [[12, 2], [22, 180]],
             // "circle-color": expression, // "circle-color": "blue",
             "circle-opacity": 0.4,
-            "circle-color": getColor.features[0].properties.conductance_z // getColor.features.properties.conductance_z
-            // e.features[0].properties.description;
-            // "circle-color": this.features.getColor.call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
+            'circle-color': [
+              'interpolate',
+              ['linear'],
+              ['conductance_z'],
+              -12361.2246720,'#b2182b',
+              -0.8704912, '#d6604d',
+              -0.5898474, '#f4a582',
+              -0.2839074, '#fddbc7',
+              0.1773300, '#f7f7f7',
+              0.3573693, '#d1e5f0',
+              0.6403849, '#92c5de',
+              2647.7223040, '#4393c3',
+              28208.5369920, '#2166ac',
+              '#ccc'
+            ],
         }
     });
 });
+
+// "circle-color": {
+//               property: 'conductance_z',
+//               type: 'linear',
+//               stops: [
+//                 [-12361.2246720,'#b2182b'],
+//                 [-0.8704912, '#d6604d']
+//                 [-0.5898474, '#f4a582'],
+//                 [-0.2839074, '#fddbc7'],
+//                 [0.1773300, '#f7f7f7'],
+//                 [0.3573693, '#d1e5f0'],
+//                 [0.6403849, '#92c5de'],
+//                 [2647.7223040, '#4393c3'],
+//                 [28208.5369920, '#2166ac'],
+//                 ['#ccc']]
+//             }
+//             {
+//                 "circle-color": {
+//                     "property": "conductance_z",
+//                     "stops": [
+//                         // "temperature" is 0   -> circle color will be blue
+//                         [0, 'blue'],
+//                         // "temperature" is 100 -> circle color will be red
+//                         [100, 'red']
+//                     ]
+//                 }
+//             }
+//             "circle-color": this.features.setPaintProperty(getColor).call(url)// store json as variable, replace this with variable 
+//             // "circle-color": getColor.features.properties.conductance_z // getColor.features.properties.conductance_z
+//             // e.features[0].properties.description;
+//             // "circle-color": this.features.getColor.call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
+
+// [-12361.2246720,'#b2182b'],
+// [-0.8704912, '#d6604d']
+// [-0.5898474, '#f4a582'],
+// [-0.2839074, '#fddbc7'],
+// [0.1773300, '#f7f7f7'],
+// [0.3573693, '#d1e5f0'],
+// [0.6403849, '#92c5de'],
+// [2647.7223040, '#4393c3'],
+// [28208.5369920, '#2166ac'],
+// ['#ccc']]
+
+// 'circle-color': [
+//       'interpolate',
+//       ['linear'],
+//       ['heatmap-density'],
+//       0, 'rgba(236,222,239,0)',
+//       0.2, 'rgb(208,209,230)',
+//       0.4, 'rgb(166,189,219)',
+//       0.6, 'rgb(103,169,207)',
+//       0.8, 'rgb(28,144,153)'
+//     ],
+
+// // 9 Quantiles of Conductance :
+// -12361.2246720     -0.8704912     -0.5898474     -0.2839074      0.1773300      0.3573693
+// 0.6403849   2647.7223040  28208.5369920
+
+
 
 // map.on('load', function() {
 // map.addSource('cyc_points', { type: 'geojson', data: url})
