@@ -88,21 +88,44 @@ map.on('load', function () {
         map.getSource('pt1_test_geojson_simple').setData(url);
     }, 2000);
 
-map.addSource('pt1_test_geojson_simple', { type: 'geojson', data: url });
-map.addLayer({
-    "id": "pt1_test_geojson_simple",
-    "type": "circle",
-    "source": "pt1_test_geojson_simple",
-    "paint": {
-        "circle-radius": 7.5,
-        // 'circle-radius': {
-        //     'base': 1.75,
-        //     'stops': [[12, 2], [22, 180]],
-        "circle-color": "blue",
-        "circle-opacity": 0.6
-        // "circle-color": this.features.map(getColor).call('cyc_points')// store json as variable, replace this with variable name
-    }
-});
+    // // Add layer from the vector tile source with data-driven style
+    // map.addLayer({
+    //     "id": "cyc_points-join",
+    //     "type": "circle",
+    //     "source": "cyc_points",
+    //     "source-layer": "cyc_points",
+    //     "paint": {
+    //         "circle-color": expression
+    //     }
+    // }, );
+
+    var expression = ["match", ["get", "id"]];
+
+    // Calculate color for each state based on the unemployment rate
+    data.forEach(function(row) {
+        var green = (row["conductance_z"] / maxValue) * 255;
+        var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
+        expression.push(row["id"], color);
+    });
+
+    // Last value is the default, used where there is no data
+    expression.push("rgba(0,0,0,0)");
+
+    map.addSource('pt1_test_geojson_simple', { type: 'geojson', data: url });
+    map.addLayer({
+        "id": "pt1_test_geojson_simple",
+        "type": "circle",
+        "source": "pt1_test_geojson_simple",
+        "paint": {
+            "circle-radius": 7.5,
+            // 'circle-radius': {
+            //     'base': 1.75,
+            //     'stops': [[12, 2], [22, 180]],
+            "circle-color": expression, // "circle-color": "blue",
+            "circle-opacity": 0.4
+            // "circle-color": this.features.map(getColor).call('cyc_points')// store json as variable, replace this with variable name
+        }
+    });
 });
 
 // map.on('load', function() {
