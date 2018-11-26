@@ -99,17 +99,17 @@ map.on('load', function () {
     //     }
     // }, );
 
-    var expression = ["match", ["get", "id"]];
+    // var expression = ["match", ["get", "id"]];
 
-    // Calculate color for each state based on the unemployment rate
-    data.forEach(function(row) {
-        var green = (row["conductance_z"] / maxValue) * 255;
-        var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
-        expression.push(row["id"], color);
-    });
+    // // Calculate color for each state based on the unemployment rate
+    // data.forEach(function(row) {
+    //     var green = (row["conductance_z"] / maxValue) * 255;
+    //     var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
+    //     expression.push(row["id"], color);
+    // });
 
-    // Last value is the default, used where there is no data
-    expression.push("rgba(0,0,0,0)");
+    // // Last value is the default, used where there is no data
+    // expression.push("rgba(0,0,0,0)");
 
     map.addSource('pt1_test_geojson_simple', { type: 'geojson', data: url });
     map.addLayer({
@@ -121,9 +121,9 @@ map.on('load', function () {
             // 'circle-radius': {
             //     'base': 1.75,
             //     'stops': [[12, 2], [22, 180]],
-            "circle-color": expression, // "circle-color": "blue",
-            "circle-opacity": 0.4
-            // "circle-color": this.features.map(getColor).call('cyc_points')// store json as variable, replace this with variable name
+            // "circle-color": expression, // "circle-color": "blue",
+            "circle-opacity": 0.4,
+            "circle-color": this.features.map(getColor).call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
         }
     });
 });
