@@ -26,6 +26,20 @@ var map = new mapboxgl.Map({
     container: 'map'
 });
 
+// //set color of marker based on feature value
+// function getColor(x) {
+//     return  x < 500     ?   'blue':
+//             x > 1000    ?   'red':
+//                             'grey' ;
+// }
+
+// //set color of marker based on feature value
+// function getColor(x) {
+//     return  x.properties.conductance_z < 500     ?   'blue':
+//             x.properties.conductance_z > 1000    ?   'red':
+//                             'grey' ;
+// }
+
 // The 'building' layer in the mapbox-streets vector source contains building-height
 // data from OpenStreetMap.
 map.on('load', function() {
@@ -110,23 +124,21 @@ map.on('load', function () {
         "type": "circle",
         "source": "pt1_test_geojson_simple",
         "paint": {
-            {
-                "circle-radius": {
-                    "base": 1.75,
-                    "stops": [
-                        // zoom is 0 and "rating" is 0 -> circle radius will be 0px
-                        [{zoom: 0}, 7],
+            "circle-radius": {
+                "base": 1.75,
+                "stops": [
+                    // zoom is 0 and "rating" is 0 -> circle radius will be 0px
+                    [{zoom: 0}, 7],
 
-                        // zoom is 0 and "rating" is 5 -> circle radius will be 5px
-                        [{zoom: 5}, 5],
+                    // zoom is 0 and "rating" is 5 -> circle radius will be 5px
+                    [{zoom: 5}, 5],
 
-                        // zoom is 20 and "rating" is 0 -> circle radius will be 0px
-                        [{zoom: 10}, 3],
+                    // zoom is 20 and "rating" is 0 -> circle radius will be 0px
+                    [{zoom: 10}, 3],
 
-                        // zoom is 20 and "rating" is 5 -> circle radius will be 20px
-                        [{zoom: 20}, 1.75]
-                    ]
-                }
+                    // zoom is 20 and "rating" is 5 -> circle radius will be 20px
+                    [{zoom: 20}, 1.75]
+                ]
             }
             // 'circle-radius': {
             //     'base': 1.75,
