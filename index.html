@@ -32,14 +32,14 @@ function getColor(x) {
             x.properties.conductance_z > 1000    ?   'red':
                             'grey' ;
 }
-// "circle-color": getColor(features.properties.conductance_z)
-
 
 // The 'building' layer in the mapbox-streets vector source contains building-height
 // data from OpenStreetMap.
 map.on('load', function() {
     // Insert the layer beneath any symbol layer.
     var layers = map.getStyle().layers;
+
+    var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson';
 
     var labelLayerId;
     for (var i = 0; i < layers.length; i++) {
@@ -48,6 +48,10 @@ map.on('load', function() {
             break;
         }
     }
+
+    // window.setInterval(function() {
+    //     map.getSource('pt1_test_geojson_simple').setData(url);
+    // }, 2000);
 
     map.addLayer({
         'id': '3d-buildings',
@@ -75,6 +79,22 @@ map.on('load', function() {
         }
     }, labelLayerId);
 
+    // map.on('load', function() {
+    map.addSource('cyc_points', { type: 'geojson', data: url})
+    "paint": {
+        "circle-radius": 7.5,
+        // 'circle-radius': {
+        //     'base': 1.75,
+        //     'stops': [[12, 2], [22, 180]],
+        "circle-color": "blue",
+        "circle-opacity": 0.6
+    };
+});
+
+
+
+    // );
+
     // map.on('load', function(e) {
     // map.addSource("cyc_points", {
     // "type": "geojson",
@@ -92,34 +112,34 @@ map.on('load', function() {
     // map.on('load', function() {
     // // Add source for participant points:
     // // https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
-    map.addSource("cyc_points", {
-        type: "geojson",
-        url: "https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson"
-    });
+    // map.addSource("cyc_points", {
+    //     type: "geojson",
+    //     url: "https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson"
+    // });
 
-    var expression = ["match", ["get", "id"]];
+    // var expression = ["match", ["get", "id"]];
 
-    // Calculate color for each state based on the unemployment rate
-    data.forEach(function(row) {
-        var green = (row["conductance_z"] / maxValue) * 255;
-        var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
-        expression.push(row["id"], color);
-    });
+    // // Calculate color for each state based on the unemployment rate
+    // data.forEach(function(row) {
+    //     var green = (row["conductance_z"] / maxValue) * 255;
+    //     var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
+    //     expression.push(row["id"], color);
+    // });
 
-    // Last value is the default, used where there is no data
-    expression.push("rgba(0,0,0,0)");
+    // // Last value is the default, used where there is no data
+    // expression.push("rgba(0,0,0,0)");
 
-    // Add layer from the vector tile source with data-driven style
-    map.addLayer({
-        "id": "cyc_points-join",
-        "type": "circle",
-        "source": "cyc_points",
-        "source-layer": "cyc_points",
-        "paint": {
-            "circle-color": expression
-        }
-    }, );
-});
+    // // Add layer from the vector tile source with data-driven style
+    // map.addLayer({
+    //     "id": "cyc_points-join",
+    //     "type": "circle",
+    //     "source": "cyc_points",
+    //     "source-layer": "cyc_points",
+    //     "paint": {
+    //         "circle-color": expression
+    //     }
+    // }, );
+
 
 
 //     var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson';
