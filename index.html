@@ -79,8 +79,20 @@ map.on('load', function() {
         }
     }, labelLayerId);
 
-    // map.on('load', function() {
-    map.addSource('cyc_points', { type: 'geojson', data: url}
+});
+
+var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson';
+
+map.on('load', function () {
+    window.setInterval(function() {
+        map.getSource('pt1_test_geojson_simple').setData(url);
+    }, 2000);
+
+map.addSource('pt1_test_geojson_simple', { type: 'geojson', data: url });
+map.addLayer({
+    "id": "pt1_test_geojson_simple",
+    "type": "circle",
+    "source": "pt1_test_geojson_simple",
     "paint": {
         "circle-radius": 7.5,
         // 'circle-radius': {
@@ -88,8 +100,22 @@ map.on('load', function() {
         //     'stops': [[12, 2], [22, 180]],
         "circle-color": "blue",
         "circle-opacity": 0.6
-    });
+        // "circle-color": this.features.map(getColor).call('cyc_points')// store json as variable, replace this with variable name
+    }
 });
+});
+
+// map.on('load', function() {
+// map.addSource('cyc_points', { type: 'geojson', data: url})
+// "paint": {
+//     "circle-radius": 7.5,
+//     // 'circle-radius': {
+//     //     'base': 1.75,
+//     //     'stops': [[12, 2], [22, 180]],
+//     "circle-color": "blue",
+//     "circle-opacity": 0.6
+// };
+// });
 
 
 
@@ -139,31 +165,6 @@ map.on('load', function() {
     //         "circle-color": expression
     //     }
     // }, );
-
-
-
-//     var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson';
-//     map.on('load', function () {
-//         window.setInterval(function() {
-//             map.getSource('pt1_test_geojson_simple').setData(url);
-//         }, 2000);
-
-//     map.addSource('pt1_test_geojson_simple', { type: 'geojson', data: url });
-//     map.addLayer({
-//         "id": "pt1_test_geojson_simple",
-//         "type": "circle",
-//         "source": "pt1_test_geojson_simple",
-//         "paint": {
-//             "circle-radius": 7.5,
-//             // 'circle-radius': {
-//             //     'base': 1.75,
-//             //     'stops': [[12, 2], [22, 180]],
-//             "circle-color": "blue",
-//             "circle-opacity": 0.6
-//             // "circle-color": this.features.map(getColor).call('cyc_points')// store json as variable, replace this with variable name
-//         }
-//     });
-// });
 
 // });
         
