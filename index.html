@@ -123,7 +123,7 @@ map.on('load', function () {
             //     'stops': [[12, 2], [22, 180]],
             // "circle-color": expression, // "circle-color": "blue",
             "circle-opacity": 0.4,
-            "circle-color": this.features.map(getColor).call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
+            "circle-color": this.features.getColor.call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
         }
     });
 });
