@@ -94,7 +94,31 @@
 </div>
     </div>
 
-<!-- <div id='map'></div> -->
+<body>
+    <div id="map"></div>
+    <div id="pano"></div>
+    <script>
+
+      function initialize() {
+        var fenway = {lat: 42.345573, lng: -71.098326};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: fenway,
+          zoom: 14
+        });
+        var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('pano'), {
+              position: fenway,
+              pov: {
+                heading: 34,
+                pitch: 10
+              }
+            });
+        map.setStreetView(panorama);
+      }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize">
+    </script>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2NtaWxsYXIiLCJhIjoiY2pvcDhrbGl4MDFvaTNrczR0d2hxcjdnNSJ9.JYgBw6y2pEq_AEAOCaoQpw';
@@ -167,6 +191,9 @@ map.on('load', function() {
             'fill-extrusion-opacity': .5
         }
     }, labelLayerId);
+
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
 
 });
 
@@ -262,7 +289,7 @@ map.on('load', function () {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
-        new mapboxgl.Popup()
+        new mapboxgl.Popup({closeOnClick: true})
             .setLngLat(coordinates)
             .setHTML('Skin Conductivity: ' + description)
             .addTo(map);
