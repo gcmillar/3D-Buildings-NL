@@ -138,10 +138,6 @@ map.on('load', function() {
         }
     }
 
-    // window.setInterval(function() {
-    //     map.getSource('pt1_test_geojson_simple').setData(url);
-    // }, 2000);
-
     map.addLayer({
         'id': '3d-buildings',
         'source': 'composite',
@@ -190,10 +186,6 @@ map.on('load', function () {
                 'base': 6,
                 'stops': [[12, 6], [70, 350]],
             },
-            // 'circle-radius': {
-            //     'base': 1.75,
-            //     'stops': [[12, 2], [22, 180]],
-            // "circle-color": expression, // "circle-color": "blue",
             "circle-opacity": 1,
             "circle-color": {
               property: 'conductance_z',
@@ -211,21 +203,6 @@ map.on('load', function () {
                 // ["grey"]
                 ]
             }
-            // 'circle-color': [
-            //   'interpolate',
-            //   ['linear'],
-            //   ['conductance_z'],
-            //   -12361.2246720,'#b2182b',
-            //   -0.8704912, '#d6604d',
-            //   -0.5898474, '#f4a582',
-            //   -0.2839074, '#fddbc7',
-            //   0.1773300, '#f7f7f7',
-            //   0.3573693, '#d1e5f0',
-            //   0.6403849, '#92c5de',
-            //   2647.7223040, '#4393c3',
-            //   28208.5369920, '#2166ac',
-            //   '#ccc'
-            // ],
         }
     });
 
@@ -293,9 +270,6 @@ map.on('load', function () {
 </script>
 
 <script type="text/html" src="//maps.googleapis.com/maps/api/js?key=AIzaSyBu_V_VjxdF38X1N6LvehcnOnc2YdjcFUE"></script>
-
-<!-- <body onload ='.initialize()'>
-    <div id="pano" style="width: 425px; height: 240px"></div></body> -->
 
 </body>
 </html>
