@@ -2,23 +2,105 @@
 <html>
 <head>
     <meta charset='utf-8' />
+      <title>Cyclists' Skin Conductivity in 3D - Netherlands</title>
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
+
+<!--     <meta charset='utf-8' />
     <title>Cyclists' Skin Conductivity in 3D - Netherlands</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' /> -->
     <style>
-        body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
+        body {
+              margin: 0;
+              padding: 0;
+              font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+            }
+
+            #map {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 100%;
+            }
+
+            h1 {
+              font-size: 20px;
+              line-height: 30px;
+            }
+
+            h2 {
+              font-size: 14px;
+              line-height: 20px;
+              margin-bottom: 10px;
+            }
+
+            a {
+              text-decoration: none;
+              color: #2dc4b2;
+            }
+
+            #console {
+              position: absolute;
+              width: 225px;
+              margin: 10px;
+              padding: 10px 20px;
+              background-color: white;
+            }
+            .session {
+              margin-bottom: 20px;
+            }
+
+            .row {
+              height: 12px;
+              width: 100%;
+            }
+
+            .colors {
+              background: linear-gradient(to left, #b2182b, #f4a582, #f7f7f7, #92c5de, #2166ac);
+              margin-left: 1px;
+            }
+            .label {
+              width: 31%;
+              display: inline-block;
+              text-align: center;
+              margin-left: 0.1px;
+            }
     </style>
 </head>
 <body>
+    <style>
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+    </style>
+    <div id='map'></div>
+    <div id='console'>
+      <h1>Mapping Emotion in 3D</h1>
+      <p>Cyclists' Skin Conductivity <br>in the Netherlands</p>
+      <p>GitHub: <a href='https://github.com/gcmillar/3D-Buildings-NL'>G.C. Millar</a></p>
+      <div class='session'>
+      <h2>Skin Conductivity</h2>
+      <div class='row colors'>
+      </div>
+      <div class='row labels'>
+        <div class='label'>Calm</div>
+        <div class='label'>Null</div>
+        <div class='label'>Stressed</div>
+      </div>
+</div>
+    </div>
 
-<div id='map'></div>
+<!-- <div id='map'></div> -->
+
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2NtaWxsYXIiLCJhIjoiY2pvcDhrbGl4MDFvaTNrczR0d2hxcjdnNSJ9.JYgBw6y2pEq_AEAOCaoQpw';
 var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/streets-v9',
-    center: [5.06, 51.6260], 
+    center: [5.06, 51.5960], 
     zoom: 12,
     pitch: 100,
     tilt: 100,
@@ -125,44 +207,85 @@ map.on('load', function () {
         "source": "pt1_test_geojson_simple",
         "paint": {
             "circle-radius": {
-                "base": 1.75,
-                "stops": [
-                    // zoom is 0 and "rating" is 0 -> circle radius will be 0px
-                    [{zoom: 0}, 7],
-
-                    // zoom is 0 and "rating" is 5 -> circle radius will be 5px
-                    [{zoom: 5}, 5],
-
-                    // zoom is 20 and "rating" is 0 -> circle radius will be 0px
-                    [{zoom: 10}, 3],
-
-                    // zoom is 20 and "rating" is 5 -> circle radius will be 20px
-                    [{zoom: 20}, 1.75]
-                ]
-            }
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
             // 'circle-radius': {
             //     'base': 1.75,
             //     'stops': [[12, 2], [22, 180]],
             // "circle-color": expression, // "circle-color": "blue",
-            "circle-opacity": 0.4,
-            'circle-color': [
-              'interpolate',
-              ['linear'],
-              ['conductance_z'],
-              -12361.2246720,'#b2182b',
-              -0.8704912, '#d6604d',
-              -0.5898474, '#f4a582',
-              -0.2839074, '#fddbc7',
-              0.1773300, '#f7f7f7',
-              0.3573693, '#d1e5f0',
-              0.6403849, '#92c5de',
-              2647.7223040, '#4393c3',
-              28208.5369920, '#2166ac',
-              '#ccc'
-            ],
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                // [-0.8704912, '#d6604d']
+                // [-0.5898474, '#4393c3'],
+                // [-0.2839074, '#fddbc7'],
+                [0.1773300, '#92c5de'],
+                // [0.3573693, '#d1e5f0'],
+                // [0.6403849, '#f7f7f7'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                // ["grey"]
+                ]
+            }
+            // 'circle-color': [
+            //   'interpolate',
+            //   ['linear'],
+            //   ['conductance_z'],
+            //   -12361.2246720,'#b2182b',
+            //   -0.8704912, '#d6604d',
+            //   -0.5898474, '#f4a582',
+            //   -0.2839074, '#fddbc7',
+            //   0.1773300, '#f7f7f7',
+            //   0.3573693, '#d1e5f0',
+            //   0.6403849, '#92c5de',
+            //   2647.7223040, '#4393c3',
+            //   28208.5369920, '#2166ac',
+            //   '#ccc'
+            // ],
         }
     });
+
+    // When a click event occurs on a feature in the places layer, open a popup at the
+    // location of the feature, with description HTML from its properties.
+    map.on('click', 'pt1_test_geojson_simple', function (e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.conductance_z;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML('Skin Conductivity: ' + description)
+            .addTo(map);
+    });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'pt1_test_geojson_simple', function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'pt1_test_geojson_simple', function () {
+        map.getCanvas().style.cursor = '';
+    });
+
+
+
 });
+
+
+
+
+
 
 // "circle-color": {
 //               property: 'conductance_z',
