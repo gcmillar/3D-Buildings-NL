@@ -7,11 +7,6 @@
       <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
       <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
 
-<!--     <meta charset='utf-8' />
-    <title>Cyclists' Skin Conductivity in 3D - Netherlands</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' /> -->
     <style>
         body {
               margin: 0;
@@ -24,6 +19,11 @@
               top: 0;
               bottom: 0;
               width: 100%;
+            }
+            #pano {
+                float: left;
+                height: 100%;
+                width: 45%;
             }
 
             h1 {
@@ -79,6 +79,8 @@
     }
     </style>
     <div id='map'></div>
+    <div id="street-view"></div>
+    <div id="pano"></div>
     <div id='console'>
       <h1>Mapping Emotion in 3D</h1>
       <p>Cyclists' Skin Conductivity <br>in the Netherlands</p>
@@ -93,32 +95,6 @@
       </div>
 </div>
     </div>
-
-<body>
-    <div id="map"></div>
-    <div id="pano"></div>
-    <script>
-
-      function initialize() {
-        var fenway = {lat: 42.345573, lng: -71.098326};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: fenway,
-          zoom: 14
-        });
-        var panorama = new google.maps.StreetViewPanorama(
-            document.getElementById('pano'), {
-              position: fenway,
-              pov: {
-                heading: 34,
-                pitch: 10
-              }
-            });
-        map.setStreetView(panorama);
-      }
-    </script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize">
-    </script>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2NtaWxsYXIiLCJhIjoiY2pvcDhrbGl4MDFvaTNrczR0d2hxcjdnNSJ9.JYgBw6y2pEq_AEAOCaoQpw';
@@ -152,7 +128,7 @@ map.on('load', function() {
     // Insert the layer beneath any symbol layer.
     var layers = map.getStyle().layers;
 
-    var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson';
+    // var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson';
 
     var labelLayerId;
     for (var i = 0; i < layers.length; i++) {
@@ -203,29 +179,6 @@ map.on('load', function () {
     window.setInterval(function() {
         map.getSource('pt1_test_geojson_simple').setData(url);
     }, 2000);
-
-    // // Add layer from the vector tile source with data-driven style
-    // map.addLayer({
-    //     "id": "cyc_points-join",
-    //     "type": "circle",
-    //     "source": "cyc_points",
-    //     "source-layer": "cyc_points",
-    //     "paint": {
-    //         "circle-color": expression
-    //     }
-    // }, );
-
-    // var expression = ["match", ["get", "id"]];
-
-    // // Calculate color for each state based on the unemployment rate
-    // data.forEach(function(row) {
-    //     var green = (row["conductance_z"] / maxValue) * 255;
-    //     var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
-    //     expression.push(row["id"], color);
-    // });
-
-    // // Last value is the default, used where there is no data
-    // expression.push("rgba(0,0,0,0)");
 
     map.addSource('pt1_test_geojson_simple', { type: 'geojson', data: url });
     map.addLayer({
@@ -280,6 +233,31 @@ map.on('load', function () {
     // location of the feature, with description HTML from its properties.
     map.on('click', 'pt1_test_geojson_simple', function (e) {
         var coordinates = e.features[0].geometry.coordinates.slice();
+        // var myPano = new google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
+        // function initialize() {
+        //     var panoramaOptions = {
+        //       position: coordinates,
+        //       pov: {
+        //         heading: 165,
+        //         pitch:0,
+        //         zoom:1
+        //       }
+        //     };
+        // myPano.setVisible(true);
+        // }
+
+        var google_coords = e.features[0].geometry.coordinates;
+
+        var panorama;
+        function initialize() {
+            panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('street-view'),
+                {
+                  position: (5.06, 51.6279),
+                  pov: {heading: 165, pitch: 0},
+                  zoom: 1
+                });
+            }
         var description = e.features[0].properties.conductance_z;
 
         // Ensure that if the map is zoomed out such that multiple
@@ -289,9 +267,15 @@ map.on('load', function () {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
+        // // var google_coords = toString(coordinates) 
+        // var google_coords = toString(e.features[0].geometry.coordinates);
+        // var google_street_url = 'https://maps.googleapis.com/maps/api/streetview?location='+coordinates+'&size=456x456&key=AIzaSyBu_V_VjxdF38X1N6LvehcnOnc2YdjcFUE&signature=BASE64_SIGNATURE';
+
         new mapboxgl.Popup({closeOnClick: true})
             .setLngLat(coordinates)
-            .setHTML('Skin Conductivity: ' + description)
+            // .setHTML(panorama)
+            .setHTML('Skin Conductivity: ' + description) // + panorama
+            // .setHTML(new mapboxgl.Popup(panorama)) // add street view popup
             .addTo(map);
     });
 
@@ -305,138 +289,13 @@ map.on('load', function () {
         map.getCanvas().style.cursor = '';
     });
 
-
-
 });
+</script>
 
+<script type="text/html" src="//maps.googleapis.com/maps/api/js?key=AIzaSyBu_V_VjxdF38X1N6LvehcnOnc2YdjcFUE"></script>
 
+<!-- <body onload ='.initialize()'>
+    <div id="pano" style="width: 425px; height: 240px"></div></body> -->
 
-
-
-
-// "circle-color": {
-//               property: 'conductance_z',
-//               type: 'linear',
-//               stops: [
-//                 [-12361.2246720,'#b2182b'],
-//                 [-0.8704912, '#d6604d']
-//                 [-0.5898474, '#f4a582'],
-//                 [-0.2839074, '#fddbc7'],
-//                 [0.1773300, '#f7f7f7'],
-//                 [0.3573693, '#d1e5f0'],
-//                 [0.6403849, '#92c5de'],
-//                 [2647.7223040, '#4393c3'],
-//                 [28208.5369920, '#2166ac'],
-//                 ['#ccc']]
-//             }
-//             {
-//                 "circle-color": {
-//                     "property": "conductance_z",
-//                     "stops": [
-//                         // "temperature" is 0   -> circle color will be blue
-//                         [0, 'blue'],
-//                         // "temperature" is 100 -> circle color will be red
-//                         [100, 'red']
-//                     ]
-//                 }
-//             }
-//             "circle-color": this.features.setPaintProperty(getColor).call(url)// store json as variable, replace this with variable 
-//             // "circle-color": getColor.features.properties.conductance_z // getColor.features.properties.conductance_z
-//             // e.features[0].properties.description;
-//             // "circle-color": this.features.getColor.call('pt1_test_geojson_simple')// store json as variable, replace this with variable name
-
-// [-12361.2246720,'#b2182b'],
-// [-0.8704912, '#d6604d']
-// [-0.5898474, '#f4a582'],
-// [-0.2839074, '#fddbc7'],
-// [0.1773300, '#f7f7f7'],
-// [0.3573693, '#d1e5f0'],
-// [0.6403849, '#92c5de'],
-// [2647.7223040, '#4393c3'],
-// [28208.5369920, '#2166ac'],
-// ['#ccc']]
-
-// 'circle-color': [
-//       'interpolate',
-//       ['linear'],
-//       ['heatmap-density'],
-//       0, 'rgba(236,222,239,0)',
-//       0.2, 'rgb(208,209,230)',
-//       0.4, 'rgb(166,189,219)',
-//       0.6, 'rgb(103,169,207)',
-//       0.8, 'rgb(28,144,153)'
-//     ],
-
-// // 9 Quantiles of Conductance :
-// -12361.2246720     -0.8704912     -0.5898474     -0.2839074      0.1773300      0.3573693
-// 0.6403849   2647.7223040  28208.5369920
-
-
-
-// map.on('load', function() {
-// map.addSource('cyc_points', { type: 'geojson', data: url})
-// "paint": {
-//     "circle-radius": 7.5,
-//     // 'circle-radius': {
-//     //     'base': 1.75,
-//     //     'stops': [[12, 2], [22, 180]],
-//     "circle-color": "blue",
-//     "circle-opacity": 0.6
-// };
-// });
-
-
-
-    // );
-
-    // map.on('load', function(e) {
-    // map.addSource("cyc_points", {
-    // "type": "geojson",
-    // "data": 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson',
-    // "paint": {
-    //         "circle-radius": 7.5,
-    //         // 'circle-radius': {
-    //         //     'base': 1.75,
-    //         //     'stops': [[12, 2], [22, 180]],
-    //         "circle-color": "blue",
-    //         "circle-opacity": 0.6
-    //     }
-    // });
-
-    // map.on('load', function() {
-    // // Add source for participant points:
-    // // https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
-    // map.addSource("cyc_points", {
-    //     type: "geojson",
-    //     url: "https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_test_geojson_simple.geojson"
-    // });
-
-    // var expression = ["match", ["get", "id"]];
-
-    // // Calculate color for each state based on the unemployment rate
-    // data.forEach(function(row) {
-    //     var green = (row["conductance_z"] / maxValue) * 255;
-    //     var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
-    //     expression.push(row["id"], color);
-    // });
-
-    // // Last value is the default, used where there is no data
-    // expression.push("rgba(0,0,0,0)");
-
-    // // Add layer from the vector tile source with data-driven style
-    // map.addLayer({
-    //     "id": "cyc_points-join",
-    //     "type": "circle",
-    //     "source": "cyc_points",
-    //     "source-layer": "cyc_points",
-    //     "paint": {
-    //         "circle-color": expression
-    //     }
-    // }, );
-
-// });
-        
-    </script>
-
-    </body>
-    </html>
+</body>
+</html>
