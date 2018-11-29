@@ -41,17 +41,19 @@
             h1 {
               font-size: 16px;
               line-height: 16px;
+              color:#696969;
             }
 
             h2 {
               font-size: 14px;
               line-height: 14px;
               margin-bottom: 8px;
+              color:#696969;
             }
 
             a {
               text-decoration: none;
-              color: #2dc4b2;
+              color:#2dc4b2;
             }
 
             #console {
@@ -61,7 +63,7 @@
               margin: 10px;
               padding: 10px 10px;
               background: rgba(225, 225, 225, .55);
-              border: 3px solid #000000 ;
+              border: 3px solid #696969; ;
               /*color: #fff;*/
               /*text-shadow: #343a40 2px 2px;*/
                 /*min-width: 100%;
@@ -69,16 +71,33 @@
                 position: relative;*/
             }
             #legend {
-                position: fixed;
-                bottom: 0;
-                right: 0;
-              /*position: relative;
-              top: 335px;
+                /* right: 50%;
+        margin-right: -250px;*/
+              position: fixed;
+              /*top: 335px;*/
               width: 200px;
               margin: 10px;
-              right:-970px;
+              right:-5%;
+              bottom:5%;
               padding: 5px 5px;
-              background: transparent;*/
+              background: transparent;
+              /*background: rgba(225, 225, 225, .5);*/
+              /*border: 3px solid #000000 ;*/
+              /*color: #fff;*/
+              /*text-shadow: #343a40 2px 2px;*/
+                /*min-width: 100%;
+                min-height: 12em;
+                position: relative;*/
+            }
+            #github {
+              position: fixed;
+              /*top: 335px;*/
+              width: 200px;
+              margin: 10px;
+              left:5%;
+              bottom:5%;
+              padding: 5px 5px;
+              background: transparent;
               /*background: rgba(225, 225, 225, .5);*/
               /*border: 3px solid #000000 ;*/
               /*color: #fff;*/
@@ -109,6 +128,7 @@
               text-align: left;
               margin-left: 1.5px;
               font-size: 10px;
+              color:#696969;
             }
     </style>
 </head>
@@ -161,6 +181,12 @@
         <div class='label'><b>Calm</b></div>
         <div class='label'><b>Stressed</b></div>
       </div>
+      <div id='github'>
+        <a href="https://github.com/gcmillar/3D-Buildings-NL" title="Fork on GitHub" alt="octocat">
+            <img src="img/git_logo.png" width="300" height="300">
+        </a>
+      </div>
+    </a>
 </div>
     </div>
 
