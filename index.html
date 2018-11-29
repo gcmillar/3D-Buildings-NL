@@ -25,16 +25,28 @@
                 height: 100%;
                 width: 45%;
             }
+/*            #menu {
+                position: relative;
+                background: rgba(225, 225, 225, .5);
+                bottom: -570px;
+                border: 3px solid #000000;
+                padding: 5px 5px;
+                width: 37%;
+                height: 100%;
+                right: -100px;
+                font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+                font-size: 12px;
+            }*/
 
             h1 {
-              font-size: 20px;
-              line-height: 30px;
+              font-size: 16px;
+              line-height: 16px;
             }
 
             h2 {
               font-size: 14px;
-              line-height: 20px;
-              margin-bottom: 10px;
+              line-height: 14px;
+              margin-bottom: 8px;
             }
 
             a {
@@ -43,14 +55,39 @@
             }
 
             #console {
-              position: absolute;
-              width: 225px;
+              position: relative;
+              top: 10px;
+              width: 200px;
               margin: 10px;
-              padding: 10px 20px;
-              background-color: white;
+              padding: 10px 10px;
+              background: rgba(225, 225, 225, .55);
+              border: 3px solid #000000 ;
+              /*color: #fff;*/
+              /*text-shadow: #343a40 2px 2px;*/
+                /*min-width: 100%;
+                min-height: 12em;
+                position: relative;*/
+            }
+            #legend {
+              position: relative;
+              top: 335px;
+              width: 200px;
+              margin: 10px;
+              right:-970px;
+              padding: 5px 5px;
+              background: transparent;
+              /*background: rgba(225, 225, 225, .5);*/
+              /*border: 3px solid #000000 ;*/
+              /*color: #fff;*/
+              /*text-shadow: #343a40 2px 2px;*/
+                /*min-width: 100%;
+                min-height: 12em;
+                position: relative;*/
             }
             .session {
-              margin-bottom: 20px;
+              margin-bottom: 10px;
+              height: 20px;
+              width: 100%;
             }
 
             .row {
@@ -61,13 +98,14 @@
             .colors {
               background: linear-gradient(to left, #b2182b, #f4a582, #f7f7f7, #92c5de, #2166ac);
               margin-left: 1px;
-              width: 80%;
+              width: 70%;
             }
             .label {
               width: 48%;
               display: inline-block;
               text-align: left;
               margin-left: 1.5px;
+              font-size: 10px;
             }
     </style>
 </head>
@@ -79,19 +117,46 @@
     }
     </style>
     <div id='map'></div>
+<!--     <div id='menu'>
+         <h2>Layers</h2>
+        <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+        <label for='basic'>basic</label>
+        <input id='streets' type='radio' name='rtoggle' value='Streets'>
+        <label for='streets'>streets</label>
+        <input id='bright' type='radio' name='rtoggle' value='Bright'>
+        <label for='bright'>bright</label>
+        <input id='light' type='radio' name='rtoggle' value='Light'>
+        <label for='light'>light</label>
+        <input id='dark' type='radio' name='rtoggle' value='Dark'>
+        <label for='dark'>dark</label>
+        <input id='satellite' type='radio' name='rtoggle' value='Satellite'>
+        <label for='satellite'>satellite</label>
+    </div> -->
     <div id="street-view"></div>
     <div id="pano"></div>
     <div id='console'>
       <h1>Mapping Emotion in 3D</h1>
       <p>Cyclists' Skin Conductivity <br>in the Netherlands</p>
       <p>GitHub: <a href='https://github.com/gcmillar/3D-Buildings-NL'>G.C. Millar</a></p>
-      <div class='session'>
+      <!-- <div class='session'>
       <h2>Skin Conductivity</h2>
       <div class='row colors'>
       </div>
       <div class='row labels'>
         <div class='label'>Calm</div>
-        <div class='label'>Stressed</div>
+        <div class='label'>Stressed</div> -->
+      </div>
+      <div id='legend'>
+      <!-- <h1>Mapping Emotion in 3D</h1>
+      <p>Cyclists' Skin Conductivity <br>in the Netherlands</p>
+      <p>GitHub: <a href='https://github.com/gcmillar/3D-Buildings-NL'>G.C. Millar</a></p> -->
+      <div class='session'> 
+      <h2>Skin Conductivity</h2>
+      <div class='row colors'>
+      </div>
+      <div class='row labels'>
+        <div class='label'><b>Calm</b></div>
+        <div class='label'><b>Stressed</b></div>
       </div>
 </div>
     </div>
@@ -107,6 +172,18 @@ var map = new mapboxgl.Map({
     // bearing: -17.6,
     container: 'map'
 });
+
+// var layerList = document.getElementById('menu');
+// var inputs = layerList.getElementsByTagName('input');
+
+// function switchLayer(layer) {
+//     var layerId = layer.target.id;
+//     map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
+// }
+
+// for (var i = 0; i < inputs.length; i++) {
+//     inputs[i].onclick = switchLayer;
+// }
 
 // //set color of marker based on feature value
 // function getColor(x) {
@@ -272,4 +349,5 @@ map.on('load', function () {
 <script type="text/html" src="//maps.googleapis.com/maps/api/js?key=AIzaSyBu_V_VjxdF38X1N6LvehcnOnc2YdjcFUE"></script>
 
 </body>
+
 </html>
