@@ -4,6 +4,7 @@
     <meta charset='utf-8' />
       <title>Cyclists' Skin Conductivity in 3D - Netherlands</title>
       <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <link rel="shortcut icon" href="img/tl_icon.png" />
       <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
       <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
@@ -69,6 +70,7 @@
               display: block;
               /*textTransform: uppercase;*/
               width: 100%;
+              top: 0px;
               /*height: 4px;*/
               background-color: rgba(225, 225, 225, .95);
               padding: 4px 28px;
@@ -104,8 +106,8 @@
               /*top: 335px;*/
               width: 200px;
               margin: 10px;
-              left: 0;
-              bottom:12%;
+              left: -3px;
+              bottom:7%;
               padding: 5px 5px;
               background: transparent;
               /*background: rgba(225, 225, 225, .5);*/
@@ -127,9 +129,10 @@
               background: transparent;
             }*/
             #github {
-              position: absolute;
-              bottom: -80px;
-              left: 80px;
+              position: fixed;
+              bottom: 7px;
+              left: 100px;
+              fill: #D3D3D3;
             }
             .session {
               margin-bottom: 10px;
@@ -142,14 +145,12 @@
               width: 100%;
             }
 
-            #icon {
+            /*#icon {
               position: absolute;
-              /*top: 15px;*/
-              /*left: 15px;*/
               bottom: 35px;
               left: 10px;
               color: black;
-            }
+            }*/
             #sidebar{
               position: absolute;
               padding: 40px 0px;
@@ -232,7 +233,7 @@
       </div>
       <div id='github'>
         <a href="https://github.com/gcmillar/3D-Buildings-NL" title="Check me out on GitHub" alt="octocat">
-            <img src="img/git_logo.png" width="110" height="39">
+            <img src="img/GitHub_Logo_gray.png" width="5%">
         </a>
       </div>
     </a>
@@ -251,8 +252,8 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZ2NtaWxsYXIiLCJhIjoiY2pvcDhrbGl4MDFvaTNrczR0d
 let map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v9', 
-  center: [5.08, 51.5960],
-  zoom: 12,
+  center: [5.065, 51.5775],
+  zoom: 16.5,
   pitch: 100,
   tilt: 100,
 });
