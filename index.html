@@ -353,21 +353,17 @@ map.on('load', function() {
             // .setHTML(new mapboxgl.Popup(panorama)) // add street view popup
             .addTo(map);
 
-        new google.maps.StreetViewPanorama(document.getElementById('pano'), {
-          // position: coordinates, 
-          position : {
-          lat : parseFloat( e.lngLat.lat ),
-          lng : parseFloat( e.lngLat.lng )
-          },
+        panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {
+          position: { lng: 5.080000, lat: 51.596000 },
           pov: { heading: 165, pitch: 0 },
           addressControl: false,
           linksControl: true, // guide arrows
           panControl: false, // compass
           zoomControl: false,
-          
+          /*
           zoomControlOptions: {
               position: google.maps.ControlPosition.LEFT_TOP
-          },
+          },*/
           fullscreenControl: true,
           fullscreenControlOptions: {
               position: google.maps.ControlPosition.LEFT_TOP
@@ -375,7 +371,45 @@ map.on('load', function() {
           zoom: 5,
           visible: true,
           mode: 'html5' // fixes bug in FF: http://stackoverflow.com/questions/28150715/remove-google-street-view-panorama-effect
-        });    
+      });    
+
+        panorama.setPov({
+          heading: +coordinates.heading || 0,
+          pitch: +coordinates.pitch || 0,
+          zoom: +coordinates.zoom || 1
+        });
+        panorama.setPosition({
+          lng: +coordinates.lng,
+          lat: +coordinates.lat
+        });
+
+        // NOTE: this fixes broken behavior:
+        panorama.setVisible(false);
+        panorama.setVisible(true);
+
+        // new google.maps.StreetViewPanorama(document.getElementById('pano'), {
+        //   // position: coordinates, 
+        //   position : {
+        //   lat : parseFloat( e.lngLat.lat ),
+        //   lng : parseFloat( e.lngLat.lng )
+        //   },
+        //   pov: { heading: 165, pitch: 0 },
+        //   addressControl: false,
+        //   linksControl: true, // guide arrows
+        //   panControl: false, // compass
+        //   zoomControl: false,
+          
+        //   zoomControlOptions: {
+        //       position: google.maps.ControlPosition.LEFT_TOP
+        //   },
+        //   fullscreenControl: true,
+        //   fullscreenControlOptions: {
+        //       position: google.maps.ControlPosition.LEFT_TOP
+        //   },
+        //   zoom: 5,
+        //   visible: true,
+        //   mode: 'html5' // fixes bug in FF: http://stackoverflow.com/questions/28150715/remove-google-street-view-panorama-effect
+        // });    
 
         // panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {
         //   position: { lng: 5.080000, lat: 51.596000 }, 
