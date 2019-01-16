@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8' />
       <title>Cyclists' Skin Conductivity in 3D - Netherlands</title>
       <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet' />
+      <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+
+      <!-- <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' /> -->
       <link rel="shortcut icon" href="img/tl_icon.png" />
-      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
-      <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHTJQBq-WUoU0UgfMGgmg6UqJHuRUj6n0&sensor=false"></script> -->
-      <!-- <script type="text/html" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHTJQBq-WUoU0UgfMGgmg6UqJHuRUj6n0"></script> -->
-      <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyBHTJQBq-WUoU0UgfMGgmg6UqJHuRUj6n0"></script>
-
-      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.1/react.min.js"></script>
-        <link href='style.css' rel='stylesheet' />
-    <script src="https://code.highcharts.com/highcharts.src.js"></script>
-    
-
-
+      <!-- <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script> -->
+      <link href='https://unpkg.com/mapillary-js@2.15.0/dist/mapillary.min.css' rel='stylesheet' />
+      <script src='https://unpkg.com/mapillary-js@2.15.0/dist/mapillary.min.js'></script>
+      <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.1/react.min.js"></script>
+      <!-- <link href='style.css' rel='stylesheet' /> -->
+      <script src="https://code.highcharts.com/highcharts.src.js"></script>
 
     <style>
         body {
               margin: 0;
               padding: 0;
               font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+              /*font-family: Roboto Mono,sans-serif;*/
             }
 
             #map {
@@ -38,19 +40,63 @@
                 width: 45%;
             }*/
             #menu {
-                position: absolute;
-                bottom: 30px;
-                left: 10px;
-                background: rgba(225, 225, 225, .5);
-                /*bottom: -570px;*/
-                border: 3px solid #000000;
-                padding: 5px 5px;
-                /*width: 37%;
-                height: 100%;
-                right: -100px;*/
-                font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
-                font-size: 12px;
-            }
+              position: absolute;
+              width: 150px;
+              /*height: 10px;*/
+              top: 33px;
+              left: 3px;
+               line-height:0.8;
+                cursor: pointer;
+              text-align: center;
+          }
+          #menu h3 {
+             cursor: pointer;
+              text-align: left;
+              /*background: rgba(225, 225, 225, .55);*/
+              border: 1px solid #696969; 
+            line-height:0.9;
+            background: rgba(255, 255, 255, 0.8);
+            color: #666666;
+            width: 214px;
+            padding: 10px;
+            top: 40px;
+            /*display: inline;*/
+            text-align: center;
+          }
+
+          #menu a {
+            background: rgba(255, 255, 255, 0.8);
+            color: #666666;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+            z-index: 1;
+            display: inline;
+            text-align: center;
+            padding: 0;
+            padding: 5px;
+            margin: 0;
+
+          }
+
+          #menu a:last-child {
+              border: none;
+          }
+
+          #menu a:hover {
+              background-color: rgba(255, 255, 255, 0.8);
+              color: #404040;
+          }
+
+          #menu a.active {
+              background-color: #3074a4;
+              color: #ffffff;
+          }
+
+          #menu a.active:hover {
+              background: #3074a4;
+          }
 
             h1 {
               font-size: 16px;
@@ -67,72 +113,42 @@
 
             a {
               text-decoration: none;
-              color:#2dc4b2;
+              color:#000000;
+
             }
 
             #console {
               position: absolute;
               display: block;
-              /*textTransform: uppercase;*/
               width: 100%;
               top: 0px;
-              /*height: 4px;*/
-              background-color: rgba(225, 225, 225, .95);
+               text-transform: uppercase;
+              background: rgba(255, 255, 255, 0.95);
+              color: #fff;
+              box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+              border-radius: 3px;
+              /*background-color: rgba(225, 225, 225, .95);*/
               padding: 4px 28px;
               font-size: 16px;
+              font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
               cursor: pointer;
               text-align: center;
               /*background: rgba(225, 225, 225, .55);*/
               border: 1px solid #696969; 
-              color: rgb(31,78,102);
-              *text-shadow: #343a40 2px 2px;*/
-                /*min-width: 100%;
-                min-height: 12em;
-                position: relative;*/
+              /*color: rgb(31,78,102);*/
+              text-shadow: #343a40 1px 1px;
+              font-size: 22px;
 
-              /*position: relative;
-              top: 10px;
-              left: 0;
-              width: 200px;
-              margin: 10px;
-              padding: 10px 10px;
-              background: rgba(225, 225, 225, .55);
-              border: 3px solid #696969; ;*/
-              /*color: #fff;*/
-              /*text-shadow: #343a40 2px 2px;*/
-                /*min-width: 100%;
-                min-height: 12em;
-                position: relative;*/
             }
             #legend {
-                /* right: 50%;
-        margin-right: -250px;*/
               position: fixed;
-              /*top: 335px;*/
               width: 200px;
               margin: 10px;
               left: -3px;
               bottom:7%;
               padding: 5px 5px;
               background: transparent;
-              /*background: rgba(225, 225, 225, .5);*/
-              /*border: 3px solid #000000 ;*/
-              /*color: #fff;*/
-              /*text-shadow: #343a40 2px 2px;*/
-                /*min-width: 100%;
-                min-height: 12em;
-                position: relative;*/
             }
-/*            #github {
-              position: fixed;
-
-              width: 200px;
-              margin: 10px;
-              left:5%;
-              bottom:-5%;
-
-              background: transparent;
-            }*/
             #github {
               position: fixed;
               bottom: 7px;
@@ -149,21 +165,15 @@
               height: 12px;
               width: 100%;
             }
-
-            /*#icon {
-              position: absolute;
-              bottom: 35px;
-              left: 10px;
-              color: black;
-            }*/
             #sidebar{
+              background: rgba(255, 255, 255, 0.35);
               position: absolute;
               padding: 40px 0px;
-              top: 5px;
+              top: 30px;
               right: 0;
               bottom: 0;
-              width: 300px;
-              box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26);
+              width: 350px;
+              box-shadow: 0px 2px 5px 0px rgba(128,128,128, .25);
               display: flex;
               flex-direction: column;
             }
@@ -173,8 +183,14 @@
               height: 50%;
               width: 300px;
             }
+            #mly {
+              /*position: relative;*/
+             bottom: -290px; 
+             height:58%;
 
-            #street-view{height:350px;max-height:50vh;display:none}
+             width: 100%;}
+
+            /*#street-view{height:350px;max-height:50vh;display:none}*/
 
 
             .colors {
@@ -194,20 +210,200 @@
 
             #stat {
              position: absolute;
-             top: 50%;
-             bottom: 0;
+             top: -10px;
+             
              width: 100%;
              height:50%;
-             background:#FFF;
+             /*background: rgba(0, 0, 0, .55);*/
              z-index:1000;
              padding: 40px 0px;
            }
 
           #container {
-            height:100%;
+            position: absolute;
+            height:50%;
             width:100%;
-            padding: 40px 0px;
+            top: 1px;
+            padding: 0px 0px;
+            /*background: rgba(0, 0, 0, .55);*/
           }
+
+          /*.map-overlay {
+            position: absolute;
+            width: 170px;
+            top: 20px;
+            left: -7px;
+            padding: 10px;
+            margin-left: 5px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            z-index: 1;
+        }
+        
+        .map-overlay .map-overlay-inner {
+            background: rgba(255, 255, 255, 0.8);
+            color: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+        
+        .map-overlay-inner fieldset {
+            border: none;
+            padding: 0;
+            margin: 0 0 10px;
+            z-index: 1;
+        }
+        /* Dark attribution */
+        
+        .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
+            color: #fff;
+        }*/
+        /* Dark popup */
+        
+        .mapboxgl-popup-content {
+            background-color: #202020;
+            color: #fff;
+            margin-left: 5px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            z-index: 1000;
+        }
+        
+        .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+            border-top-color: #202020;
+        }
+        
+        .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip,
+        .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+            border-bottom-color: #202020;
+        }
+        
+        .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+            border-left-color: #202020;
+        }
+        
+        .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+            border-right-color: #202020;
+        }
+        
+        #popup-menu ul,
+        #menu li {
+            margin: 0;
+            padding: 0;
+            z-index: 100;
+        }
+        
+        /*.mapboxgl-ctrl-group {
+            -webkit-filter: invert(100%);
+        }*/
+        
+        .loader {
+            margin: -10px 0 0 -250px;
+            height: 100px;
+            width: 20%;
+            position: fixed;
+            text-align: center;
+            padding: 1em;
+            top: 50%;
+            left: 50%;
+            margin: 0 auto 1em;
+            z-index: 9999;
+        }
+
+        span {
+          position: absolute;
+          top: 10.4px;
+          left: -1px;
+        }
+
+        .topleft {
+          position: absolute;
+          text-align: top;
+          top: 5px;
+          left: 8px;
+          font-size: 12px;
+          font-weight: bold;
+        }
+        .nav {
+          background: #004544;
+            width: 100%;
+            display: flex;
+          height: 4em;
+          font-family:"Montserrat";
+          color:white;
+          flex-wrap: wrap;
+
+        }
+
+
+        .nav img {
+         width: 5em;
+         order: 1;
+        }
+
+        .nav #wall-view {
+          order:2;
+
+          flex-grow: 1;
+          align-self:center;
+        }
+
+        .content {
+        width:100%;
+        display:flex;
+        }
+
+        /*#side-bar {
+          order: 1;
+        display:none;
+        height: 100vh;
+         width: 60em;
+         background-color: #fff; }*/
+
+         #close {
+            background: rgba(255, 255, 255, 0.65);
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            z-index: 1;
+            right: 350.2px;
+            top: 0px;
+        }
+        #close:after {
+            content: "";
+            border-radius: 3px;
+            border-color: #3074a4;
+            height: 30px;
+            border-right: 2.5px solid #3074a4;
+            position: absolute;
+            transform: rotate(45deg);
+            right: 14px;
+        }
+
+        #close:before {
+          border-radius: 3px;
+          border-color: #3074a4;
+            content: "";
+            height: 30px;
+            border-right: 2.5px solid #3074a4;
+            position: absolute;
+            transform: rotate(-45deg);
+            right: 14px;
+        }
+
+          
     </style>
 </head>
 <body>
@@ -217,26 +413,43 @@
         font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     }
     </style>
+    <!-- <div class="content"> -->
+    <!-- <div class="header"></div>
+    <div id="side-bar">
+    <div id="close"></div>
+
+    </div>
+    <div id='map'><div class='map-overlay' id='legend'></div>
+    <div id='mly'></div> -->
     <div id='map'></div>
+    
+    <nav id="menu"><h3>Select Participant</h3> <br></nav>
+
     <div id='sidebar'>
-        <!-- <h1>Choropleth example using Mapbox GL js</h1>
-        <h2>Population change, 1990-2000</h2>
-        <b id="tooltip-name"></b>
-        <b id='tooltip'></b>
-        <canvas id="linechart" width="800" height="450"></canvas> -->
+        
         <div id='container'>
-          <div id="pano"></div>
+
         <div id='stat'></div>
         </div>
+        <div id='mly'></div>
+        <div id="close"></div>
     </div>
+        
+        
+  
     <button id="icon">
       Switch layers
       </button>
-    <div id="street-view"></div>
+    <!-- <div id="street-view"></div> -->
     <!-- <div id="pano"></div> -->
-    <div id='console'>
-      MAPPING EMOTION IN 3D: CYCLISTS' SKIN CONDUCTIVITY IN THE NETHERLANDS
+    <div id='console'> <a><b>
+      <a href="https://github.com/gcmillar/3D-Buildings-NL" target="_blank">
+      Mapping Cyclists' Skin Conductivity in 3D </a></a></b> 
+      
       </div>
+
+      <span class=topleft><img style="width:1.3em; " src=http://icon-park.com/imagefiles/location_map_pin_blue5.png alt=alerts>  <a href="https://www.google.com/maps/place/Tilburg,+Netherlands/@51.5848961,4.9233875,11z/data=!3m1!4b1!4m5!3m4!1s0x47c69585518d5c67:0x636befab4fb5a182!8m2!3d51.5852528!4d5.056375" target="_blank">Tilburg, Netherlands </a></br></span>
+
       <div id='legend'>
       <div class='session'> 
       <h2>Skin Conductivity</h2>
@@ -257,63 +470,72 @@
 
 
 
-<script src="script.js" type="text/javascript"></script>
+    </div>
+
+    
+</div>
 
 <script>
 var chart;
 
 // Initially
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ2NtaWxsYXIiLCJhIjoiY2pvcDhrbGl4MDFvaTNrczR0d2hxcjdnNSJ9.JYgBw6y2pEq_AEAOCaoQpw';
-let map = new mapboxgl.Map({
+var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v9', 
   center: [5.065, 51.5775],
   zoom: 16.5,
   pitch: 100,
   tilt: 100,
+  // movingMethod: "jumpTo";
+  // (load): "map = $event"
 });
 
+let markerSource = {
+  type: "geojson",
+  data: {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [5.0633,51.6272]
+    },
+    properties: {}
+  }
+};
 
-// The 'building' layer in the mapbox-streets vector source contains building-height
-// data from OpenStreetMap.
-map.on('load', function() {
-    // Insert the layer beneath any symbol layer.
-    var layers = map.getStyle().layers;
-    window.setInterval(function() {
-        map.getSource('pt1_geojson_conduct-time').setData(url);
-    }, 2000);
+map.on('load', function () {
+    let photos = "https://a.mapillary.com/v3/images?client_id=QjI1NnU0aG5FZFZISE56U3R5aWN4ZzplNDVjNDc0YmYwYjJmYjQ0&closeto=5.0633,51.6272"
+        let mapillaryphotos = null
+        fetch(photos).then(response => {
+          return response.json()
+        }).then(data => {
+          mapillaryphotos = data
+        })
+    map.addSource('CHIPS_all_pts', {
+        type: 'geojson',
+        data: 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/CHIPS_all_pts'
+    });
 
-    map.addSource('pt1_geojson_conduct-time', { type: 'geojson', data: url });
-    var layers = map.getStyle().layers;
+    map.addSource('photos-mapillary', {
+        type: 'geojson',
+        data: photos,
+
+      });
+      map.addSource("markers", markerSource);
+      map.addLayer({
+        id: "markers",
+        type: "symbol",
+        source: "markers",
+        layout: {
+          "icon-image": "car-15"
+        }  });
+
+    if (window.location.search.indexOf('embed') !== -1) map.scrollZoom.disable();
+
     map.addLayer({
-        'id': '3d-buildings',
-        'source': 'composite',
-        'source-layer': 'building',
-        'filter': ['==', 'extrude', 'true'],
-        'type': 'fill-extrusion',
-        'minzoom': 12,
-        'paint': {
-            'fill-extrusion-color': '#c6bdff',
-
-            // use an 'interpolate' expression to add a smooth transition effect to the
-            // buildings as the user zooms in
-            'fill-extrusion-height': [
-                "interpolate", ["linear"], ["zoom"],
-                10, 0,
-                10.05, ["get", "height"]
-            ],
-            'fill-extrusion-base': [
-                "interpolate", ["linear"], ["zoom"],
-                10, 0,
-                10.05, ["get", "min_height"]
-            ],
-            'fill-extrusion-opacity': .5
-        }
-    }, labelLayerId);
-    map.addLayer({
-        "id": "pt1_geojson_conduct-time",
+        "id": "1",
         "type": "circle",
-        "source": "pt1_geojson_conduct-time",
+        "source": "CHIPS_all_pts",
         "paint": {
             "circle-radius": {
                 'base': 6,
@@ -325,176 +547,407 @@ map.on('load', function() {
               type: 'exponential',
               stops: [
                 [-12361.2246720,'#2166ac'],
-                // [-0.8704912, '#d6604d']
-                // [-0.5898474, '#4393c3'],
-                // [-0.2839074, '#fddbc7'],
                 [0.1773300, '#92c5de'],
-                // [0.3573693, '#d1e5f0'],
-                // [0.6403849, '#f7f7f7'],
                 [2647.7223040, '#f4a582'],
                 [28208.5369920, '#b2182b'],
-                // ["grey"]
                 ]
             }
+        },
+        'filter': ['==', 'participant', 1]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "2",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 2]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "3",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 3]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "4",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 4]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "5",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 5]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "6",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 6]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "7",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 7]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "8",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 8]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "9",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 9]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "10",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 10]
+    }, 'waterway-label');
+    map.addLayer({
+        "id": "11",
+        "type": "circle",
+        "source": "CHIPS_all_pts",
+        "paint": {
+            "circle-radius": {
+                'base': 6,
+                'stops': [[12, 6], [70, 350]],
+            },
+            "circle-opacity": 1,
+            "circle-color": {
+              property: 'conductance_z',
+              type: 'exponential',
+              stops: [
+                [-12361.2246720,'#2166ac'],
+                [0.1773300, '#92c5de'],
+                [2647.7223040, '#f4a582'],
+                [28208.5369920, '#b2182b'],
+                ]
+            }
+        },
+        'filter': ['==', 'participant', 11]
+    }, 'waterway-label');
+    map.on("mousemove", function(e) {
+          let features = map.queryRenderedFeatures(e.point, {
+            layers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+          });
+          map.getCanvas().style.cursor = features.length ? "pointer" : "";
+        });
+
+        map.on('load', function() {
+          let layers = map.getStyle().layers;
+
+          let labelLayerId;
+          for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+              labelLayerId = layers[i].id;
+              break;
+            }
+          }
+
+
+
+        window.addEventListener("resize", function() {
+          mly.resize();
+        });
+      });
+        let mly = new Mapillary.Viewer(
+        'mly',
+
+        'WGl5Z2dkVHEydGMwWlNMOHUzVHR4QToyMmQ4OTRjYzczZWFiYWVi',
+        null,
+      );
+      map.on('click', function(e) {
+        // https://a.mapillary.com/v3/images?closeto=5.0633,51.6272&client_id=QjI1NnU0aG5FZFZISE56U3R5aWN4ZzplNDVjNDc0YmYwYjJmYjQ0&usernames=gcmillar
+        let closeto = "https://a.mapillary.com/v3/images?closeto=" + e.lngLat.lng + "," + e.lngLat.lat + "&client_id=QjI1NnU0aG5FZFZISE56U3R5aWN4ZzplNDVjNDc0YmYwYjJmYjQ0";
+        let newpoint = turf.point([e.lngLat.lng, e.lngLat.lat])
+        console.log(newpoint)
+        map.getSource('markers').setData(newpoint
+
+        );
+        fetch(closeto)
+          .then(response => {
+            return response.json()
+          })
+          .then(data => {
+
+            let mapillaryphotos = data;
+            let mapillary_keys = mapillaryphotos.features[0].properties.key;
+            mly.moveToKey(mapillary_keys)
+
+            console.log(e.lngLat.lng, e.lngLat.lat)
+
+          });
+
+        document.getElementById("map").onclick = function() {
+          displaySidebar()
+        };
+
+        function displaySidebar() {
+          document.getElementById("sidebar").style.display = "block";
+          mly.resize();
         }
-    }, labelLayerId);
 
-    // When a click event occurs on a feature in the places layer, open a popup at the
-    // location of the feature, with description HTML from its properties.
-    map.on('click', 'pt1_geojson_conduct-time', function (e) {
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.conductance_z;
+        document.getElementById("close").onclick = function() {
+          closeSidebar()
+        };
 
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        function closeSidebar() {
+          document.getElementById("sidebar").style.display = "none";
+          mly.resize();
         }
 
-        new mapboxgl.Popup({closeOnClick: true})
-            .setLngLat(coordinates)
-            // .setHTML(panorama)
-            .setHTML('Skin Conductivity: ' + description) // + panorama
-            // .setHTML(new mapboxgl.Popup(panorama)) // add street view popup
+
+      });
+
+
+
+
+});
+
+map.once('style.load', function(e) {
+    // init();
+    // map.addControl(new mapboxgl.NavigationControl());
+    map.on('click', function(e) {
+        var features = map.queryRenderedFeatures(e.point, {
+            layers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+        });
+        if (!features.length) {
+            return;
+        }
+        var feature = features[0];
+        var popup = new mapboxgl.Popup()
+            .setLngLat(map.unproject(e.point))
+            .setHTML('<h3>Cyclist Information</h3>' +
+                '<ul>' +
+                '<li>Skin Conductance: <b>' + feature.properties.conductance_z + '</b></li>' +
+                '<li>Speed: <b>' + feature.properties.speed2 + '</b></li>' +
+                '<li>Elevation (m): <b>' + feature.properties.altitude + '</b></li>' +
+                '<li>Distance Travelled: <b>' + feature.properties.distance + '</b></li>' +
+                '<li>Participant: <b>' + feature.properties.participant + '</b></li>' +
+                '</ul>')
             .addTo(map);
+       
+    });
 
-        panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {
-          position: { lng: 5.080000, lat: 51.596000 },
-          pov: { heading: 165, pitch: 0 },
-          addressControl: false,
-          linksControl: true, // guide arrows
-          panControl: false, // compass
-          zoomControl: false,
-          /*
-          zoomControlOptions: {
-              position: google.maps.ControlPosition.LEFT_TOP
-          },*/
-          fullscreenControl: true,
-          fullscreenControlOptions: {
-              position: google.maps.ControlPosition.LEFT_TOP
-          },
-          zoom: 5,
-          visible: true,
-          mode: 'html5' // fixes bug in FF: http://stackoverflow.com/questions/28150715/remove-google-street-view-panorama-effect
-      });    
+    //Hide loading bar once tiles from geojson are loaded
+        map.on('data', function(e) {
+            if (e.dataType === 'source' && e.sourceId === 'CHIPS_all_pts') {
+                document.getElementById("menu");
+            }
+        })
 
-        panorama.setPov({
-          heading: +coordinates.heading || 0,
-          pitch: +coordinates.pitch || 0,
-          zoom: +coordinates.zoom || 1
-        });
-        panorama.setPosition({
-          lng: +coordinates.lng,
-          lat: +coordinates.lat
+        // Use the same approach as above to indicate that the symbols are clickable
+        // by changing the cursor style to 'pointer'.
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+            });
+            map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
         });
 
-        // NOTE: this fixes broken behavior:
-        panorama.setVisible(false);
-        panorama.setVisible(true);
+    let icon = document.getElementById('icon');
 
-        // new google.maps.StreetViewPanorama(document.getElementById('pano'), {
-        //   // position: coordinates, 
-        //   position : {
-        //   lat : parseFloat( e.lngLat.lat ),
-        //   lng : parseFloat( e.lngLat.lng )
-        //   },
-        //   pov: { heading: 165, pitch: 0 },
-        //   addressControl: false,
-        //   linksControl: true, // guide arrows
-        //   panControl: false, // compass
-        //   zoomControl: false,
-          
-        //   zoomControlOptions: {
-        //       position: google.maps.ControlPosition.LEFT_TOP
-        //   },
-        //   fullscreenControl: true,
-        //   fullscreenControlOptions: {
-        //       position: google.maps.ControlPosition.LEFT_TOP
-        //   },
-        //   zoom: 5,
-        //   visible: true,
-        //   mode: 'html5' // fixes bug in FF: http://stackoverflow.com/questions/28150715/remove-google-street-view-panorama-effect
-        // });    
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
 
-        // panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {
-        //   position: { lng: 5.080000, lat: 51.596000 }, 
-        //   pov: { heading: 165, pitch: 0 },
-        //   addressControl: false,
-        //   linksControl: true, // guide arrows
-        //   panControl: false, // compass
-        //   zoomControl: false,
-          
-        //   zoomControlOptions: {
-        //       position: google.maps.ControlPosition.LEFT_TOP
-        //   },
-        //   fullscreenControl: true,
-        //   fullscreenControlOptions: {
-        //       position: google.maps.ControlPosition.LEFT_TOP
-        //   },
-        //   zoom: 5,
-        //   visible: true,
-        //   mode: 'html5' // fixes bug in FF: http://stackoverflow.com/questions/28150715/remove-google-street-view-panorama-effect
-        // });
+    chartInit()
 
-        // panorama.setPov({
-        // heading: +coordinates.heading || 0,
-        // pitch: +coordinates.pitch || 0,
-        // zoom: +coordinates.zoom || 1
-        // });
-        // panorama.setPosition({
-        //     lng: +coordinates,
-        //     lat: +coordinates
-        // });
+    map.on("render", chartSetData);
 
-        // // NOTE: this fixes broken behavior:
-        // panorama.setVisible(false);
-        // panorama.setVisible(true);    
+});
 
-        // panorama.setPano(coordinates.pano);
-        // panorama.setPov({
-        //   heading: 270,
-        //   pitch: 0
-        // });
-        // panorama.setVisible(true);
+var toggleableLayerIds = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 
-          // var markerPanoID = coordinates.pano;
-          // // Set the Pano to use the passed panoID.
-          // panorama.setPano(markerPanoID);
-          // panorama.setPov({
-          //   heading: 270,
-          //   pitch: 0
-          // });
-          // panorama.setVisible(true);    
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
 
-        // function initialize() {
-        //   var fenway = new google.maps.LatLng(51.596000, 5.080000); 
-        //   var panoramaOptions = {
-        //     position: fenway,
-        //     pov: {
-        //       heading: 225,
-        //       pitch: 20
-        //     },
-        // linksControl: false,
-        // scrollwheel: false,
-        // clickToGo: true
-        //   };
-        //   var panorama = new google.maps.StreetViewPanorama(document.getElementById('panorama'), panoramaOptions);
-        // }
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
 
-        // google.maps.event.addDomListener(window, 'load', initialize);
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
 
-    });
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
 
-    // Change the cursor to a pointer when the mouse is over the places layer.
-    map.on('mouseenter', 'pt1_geojson_conduct-time', function () {
-        map.getCanvas().style.cursor = 'pointer';
-    });
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
 
-    // Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'pt1_geojson_conduct-time', function () {
-        map.getCanvas().style.cursor = '';
-    });
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
+
+map.on('load', function() {
+    // Insert the layer beneath any symbol layer.
+    var layers = map.getStyle().layers;
 
     var labelLayerId;
     for (var i = 0; i < layers.length; i++) {
@@ -503,632 +956,582 @@ map.on('load', function() {
             break;
         }
     }
-    let icon = document.getElementById('icon');
 
-    icon.addEventListener('click', function(e) {
-      map.setStyle('mapbox://styles/mapbox/dark-v9');
-      }, false)
+    map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 0,
+        'paint': {
+            'fill-extrusion-color': '#c6bdff',
 
-    
-
-
-
-    // Add zoom and rotation controls to the map.
-    map.addControl(new mapboxgl.NavigationControl());
-
-    // chartInit()
-
-  map.on("render", chartSetData);
-
+            // use an 'interpolate' expression to add a smooth transition effect to the buildings as the user zooms in
+            'fill-extrusion-height': [
+                "interpolate", ["linear"], ["zoom"],
+                10, 0,
+                15, ["get", "height"]
+            ],
+            'fill-extrusion-base': [
+                "interpolate", ["linear"], ["zoom"],
+               10, 0,
+                15, ["get", "min_height"]
+            ],
+            'fill-extrusion-opacity': .55
+        }
+    }, labelLayerId);
 });
 
 
-// function getData() {
-//   var vals = [];
-//   var layer = "pt1_geojson_conduct-time"
-//   if (!map.getLayer(layer)) return vals;
 
-//   var test = map.queryRenderedFeatures({
-//     layers: [layer]
-//   });
+function getData() {
+  var vals = [];
+  var layer = [];
+  if (!map.getLayer(layer)) return vals;
 
-//   test.forEach(function(f) {
-//     vals.push([f.properties.time, f.properties.conductance_z]);
-//   })
+  var test = map.queryRenderedFeatures({
+    layers: [layer]
+  });
 
-//   vals = vals.sort(function(a, b) {
+  test.forEach(function(f) {
+    vals.push([f.properties.time, f.properties.conductance_z]);
+  })
 
-//     return a[0] - b[0];
-//   })
+  vals = vals.sort(function(a, b) {
 
-//   return (vals);
-// }
+    return a[0] - b[0];
+  })
 
+  return (vals);
+}
 
+function chartSetData() {
+  data = getData();
 
+  if (!data || data.length == 0) return;
 
-// function chartSetData() {
-//   data = getData();
+  chart.series[0].update({
+    data: data
+  })
+}
 
-//   if (!data || data.length == 0) return;
+function chartInit(data) {
 
-//   chart.series[0].update({
-//     data: data
-//   })
+  data = data || getData() || [];
 
+  Highcharts.createElement('link', {
+    href: 'https://fonts.googleapis.com/css?family=Unica+One',
+    rel: 'stylesheet',
+    type: 'text/css'
+  }, null, document.getElementsByTagName('head')[0]);
 
-// }
+  Highcharts.theme = {
+    colors: ['rgba(31, 78, 102, .35)', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+      '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
+    ],
+    chart: {
+      backgroundColor: {
+        linearGradient: {
+          x1: 0,
+          y1: 0,
+          x2: 1,
+          y2: 1
+        },
+        stops: [
+          [0, 'rgba(255, 255, 255, 0.5)'],
+          [1, 'rgba(255, 255, 255, 0.5)']
+        ]
+      },
+      style: {
+        fontFamily: 'Helvetica Neue, Arial, Helvetica, sans-serif;'
+      },
+      plotBorderColor: '#606063'
+    },
+    title: {
+      style: {
+        color: '#000000',
+        textTransform: 'uppercase',
+        fontSize: '20px'
+      }
+    },
+    subtitle: {
+      style: {
+        color: '#000000',
+        textTransform: 'uppercase'
+      }
+    },
+    xAxis: {
+      gridLineColor: '#707073',
+      labels: {
+        style: {
+          color: '#000000'
+        }
+      },
+      lineColor: '#707073',
+      minorGridLineColor: '#505053',
+      tickColor: '#707073',
+      title: {
+        style: {
+          color: '#000000'
 
-// function chartInit(data) {
+        }
+      }
+    },
+    yAxis: {
+      gridLineColor: '#707073',
+      labels: {
+        style: {
+          color: '#000000'
+        }
+      },
+      lineColor: '#707073',
+      minorGridLineColor: '#505053',
+      tickColor: '#707073',
+      tickWidth: 1,
+      title: {
+        style: {
+          color: '#000000'
+        }
+      }
+    },
+    tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, .55)',
+      style: {
+        color: '#000000'
+      }
+    },
+    plotOptions: {
+      series: {
+        dataLabels: {
+          color: '#B0B0B3'
+        },
+        marker: {
+          lineColor: '#333'
+        }
+      },
+      boxplot: {
+        fillColor: 'blue'
+      },
+      candlestick: {
+        lineColor: 'white'
+      },
+      errorbar: {
+        color: 'white'
+      }
+    },
+    legend: {
+      itemStyle: {
+        color: '#E0E0E3'
+      },
+      itemHoverStyle: {
+        color: '#FFF'
+      },
+      itemHiddenStyle: {
+        color: '#606063'
+      }
+    },
+    credits: {
+      style: {
+        color: '#666'
+      }
+    },
+    labels: {
+      style: {
+        color: '#707073'
+      }
+    },
 
-//   data = data || getData() || [];
+    drilldown: {
+      activeAxisLabelStyle: {
+        color: '#000000'
+      },
+      activeDataLabelStyle: {
+        color: '#000000'
+      }
+    },
 
-//   Highcharts.createElement('link', {
-//     href: 'https://fonts.googleapis.com/css?family=Unica+One',
-//     rel: 'stylesheet',
-//     type: 'text/css'
-//   }, null, document.getElementsByTagName('head')[0]);
+    navigation: {
+      buttonOptions: {
+        symbolStroke: '#DDDDDD',
+        theme: {
+          fill: '#505053'
+        }
+      }
+    },
 
-//   Highcharts.theme = {
-//     colors: ['rgba(31, 78, 102, .35)', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
-//       '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
-//     ],
-//     chart: {
-//       backgroundColor: {
-//         linearGradient: {
-//           x1: 0,
-//           y1: 0,
-//           x2: 1,
-//           y2: 1
-//         },
-//         stops: [
-//           [0, 'rgba(225, 225, 225, .55)'],
-//           [1, 'rgba(225, 225, 225, .55)']
-//         ]
-//       },
-//       style: {
-//         fontFamily: 'Helvetica Neue, Arial, Helvetica, sans-serif;'
-//       },
-//       plotBorderColor: '#606063'
-//     },
-//     title: {
-//       style: {
-//         color: '#000000',
-//         textTransform: 'uppercase',
-//         fontSize: '20px'
-//       }
-//     },
-//     subtitle: {
-//       style: {
-//         color: '#000000',
-//         textTransform: 'uppercase'
-//       }
-//     },
-//     xAxis: {
-//       gridLineColor: '#707073',
-//       labels: {
-//         style: {
-//           color: '#000000'
-//         }
-//       },
-//       lineColor: '#707073',
-//       minorGridLineColor: '#505053',
-//       tickColor: '#707073',
-//       title: {
-//         style: {
-//           color: '#000000'
+    // scroll charts
+    rangeSelector: {
+      buttonTheme: {
+        fill: '#505053',
+        stroke: '#000000',
+        style: {
+          color: '#CCC'
+        },
+        states: {
+          hover: {
+            fill: '#707073',
+            stroke: '#000000',
+            style: {
+              color: 'white'
+            }
+          },
+          select: {
+            fill: '#000003',
+            stroke: '#000000',
+            style: {
+              color: 'white'
+            }
+          }
+        }
+      },
+      inputBoxBorderColor: '#505053',
+      inputStyle: {
+        backgroundColor: '#333',
+        color: 'silver'
+      },
+      labelStyle: {
+        color: 'silver'
+      }
+    },
 
-//         }
-//       }
-//     },
-//     yAxis: {
-//       gridLineColor: '#707073',
-//       labels: {
-//         style: {
-//           color: '#000000'
-//         }
-//       },
-//       lineColor: '#707073',
-//       minorGridLineColor: '#505053',
-//       tickColor: '#707073',
-//       tickWidth: 1,
-//       title: {
-//         style: {
-//           color: '#000000'
-//         }
-//       }
-//     },
-//     tooltip: {
-//       backgroundColor: 'rgba(0, 0, 0, 0.85)',
-//       style: {
-//         color: '#F0F0F0'
-//       }
-//     },
-//     plotOptions: {
-//       series: {
-//         dataLabels: {
-//           color: '#B0B0B3'
-//         },
-//         marker: {
-//           lineColor: '#333'
-//         }
-//       },
-//       boxplot: {
-//         fillColor: 'blue'
-//       },
-//       candlestick: {
-//         lineColor: 'white'
-//       },
-//       errorbar: {
-//         color: 'white'
-//       }
-//     },
-//     legend: {
-//       itemStyle: {
-//         color: '#E0E0E3'
-//       },
-//       itemHoverStyle: {
-//         color: '#FFF'
-//       },
-//       itemHiddenStyle: {
-//         color: '#606063'
-//       }
-//     },
-//     credits: {
-//       style: {
-//         color: '#666'
-//       }
-//     },
-//     labels: {
-//       style: {
-//         color: '#707073'
-//       }
-//     },
+    navigator: {
+      handles: {
+        backgroundColor: '#666',
+        borderColor: '#AAA'
+      },
+      outlineColor: '#CCC',
+      maskFill: 'rgba(255,255,255,0.1)',
+      series: {
+        color: '#7798BF',
+        lineColor: '#A6C7ED'
+      },
+      xAxis: {
+        gridLineColor: '#505053'
+      }
+    },
 
-//     drilldown: {
-//       activeAxisLabelStyle: {
-//         color: '#F0F0F3'
-//       },
-//       activeDataLabelStyle: {
-//         color: '#F0F0F3'
-//       }
-//     },
+    scrollbar: {
+      barBackgroundColor: '#808083',
+      barBorderColor: '#808083',
+      buttonArrowColor: '#CCC',
+      buttonBackgroundColor: '#606063',
+      buttonBorderColor: '#606063',
+      rifleColor: '#FFF',
+      trackBackgroundColor: '#404043',
+      trackBorderColor: '#404043'
+    },
 
-//     navigation: {
-//       buttonOptions: {
-//         symbolStroke: '#DDDDDD',
-//         theme: {
-//           fill: '#505053'
-//         }
-//       }
-//     },
+    // special colors for some of the
+    legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+    background2: '#505053',
+    dataLabelsColor: '#B0B0B3',
+    textColor: '#000000',
+    contrastTextColor: '#F0F0F3',
+    maskColor: 'rgba(255,255,255,0.3)'
+  };
 
-//     // scroll charts
-//     rangeSelector: {
-//       buttonTheme: {
-//         fill: '#505053',
-//         stroke: '#000000',
-//         style: {
-//           color: '#CCC'
-//         },
-//         states: {
-//           hover: {
-//             fill: '#707073',
-//             stroke: '#000000',
-//             style: {
-//               color: 'white'
-//             }
-//           },
-//           select: {
-//             fill: '#000003',
-//             stroke: '#000000',
-//             style: {
-//               color: 'white'
-//             }
-//           }
-//         }
-//       },
-//       inputBoxBorderColor: '#505053',
-//       inputStyle: {
-//         backgroundColor: '#333',
-//         color: 'silver'
-//       },
-//       labelStyle: {
-//         color: 'silver'
-//       }
-//     },
+  // Apply the theme
+  Highcharts.setOptions(Highcharts.theme);
 
-//     navigator: {
-//       handles: {
-//         backgroundColor: '#666',
-//         borderColor: '#AAA'
-//       },
-//       outlineColor: '#CCC',
-//       maskFill: 'rgba(255,255,255,0.1)',
-//       series: {
-//         color: '#7798BF',
-//         lineColor: '#A6C7ED'
-//       },
-//       xAxis: {
-//         gridLineColor: '#505053'
-//       }
-//     },
-
-//     scrollbar: {
-//       barBackgroundColor: '#808083',
-//       barBorderColor: '#808083',
-//       buttonArrowColor: '#CCC',
-//       buttonBackgroundColor: '#606063',
-//       buttonBorderColor: '#606063',
-//       rifleColor: '#FFF',
-//       trackBackgroundColor: '#404043',
-//       trackBorderColor: '#404043'
-//     },
-
-//     // special colors for some of the
-//     legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
-//     background2: '#505053',
-//     dataLabelsColor: '#B0B0B3',
-//     textColor: '#C0C0C0',
-//     contrastTextColor: '#F0F0F3',
-//     maskColor: 'rgba(255,255,255,0.3)'
-//   };
-
-//   // Apply the theme
-//   Highcharts.setOptions(Highcharts.theme);
-
-
-//   chart = Highcharts.chart('container', {
-//     chart: {
-//       zoomType: 'x',
-//       events: {
-//         selection: function(event) {
-//             var layer = "pt1_geojson_conduct-time";
+  chart = Highcharts.chart('container', {
+    chart: {
+      zoomType: 'x',
+      events: {
+        selection: function(event) {
+            var layer = [];
           
-//           if(event.resetSelection){
-//                map.setFilter(layer,[
-//             'all'
-//           ])
+          if(event.resetSelection){
+               map.setFilter(layer,[
+            'all'
+          ])
             
-//           }else{
-//           var ext = event.xAxis[0];
+          }else{
+          var ext = event.xAxis[0];
          
-//           map.setFilter(layer,[
-//             'all',
-//             ['<','time',ext.max],
-//             ['>','time',ext.min]
-//           ])
-//           }
-//         }
-//       }
-//     },
-//     title: {
-//       text: 'Skin Conductivity'
-//     },
-//     subtitle: {
-//       text: 'Click & drag to filter'
-//     },
-//     xAxis: {
-//       title: {
-//         text: 'Cycling Time (s)'
-//     }
-//     },
-//     yAxis: {
-//       title: {
-//         text: 'Conductivity'
-//       }
-//     },
-//     legend: {
-//       enabled: false
-//     },
+          map.setFilter(layer,[
+            'all',
+            ['<','time',ext.max],
+            ['>','time',ext.min]
+          ])
+          }
+        }
+      }
+    },
+    title: {
+      text: 'Skin Conductivity'
+    },
+    subtitle: {
+      text: 'Click & drag to filter'
+    },
+    xAxis: {
+      title: {
+        text: 'Cycling Time (s)'
+    }
+    },
+    yAxis: {
+      title: {
+        text: 'Conductivity'
+      }
+    },
+    legend: {
+      enabled: false
+    },
 
-//     plotOptions: {
-//       line: {
-//         fillColor: {
-//           // linearGradient: {
-//           //   x1: 0,
-//           //   y1: 0,
-//           //   x2: 0,
-//           //   y2: 1
-//           // },
-//           stops: [
-//           [-12361.2246720,'rgba(33, 102, 172, .55)'], 
-//           // [-0.8704912, '#d6604d']
-//           // [-0.5898474, '#4393c3'],
-//           // [-0.2839074, '#fddbc7'],
-//           // [0.1773300, 'rgba(146,197,222, .55)'],
-//           // // [0.3573693, '#d1e5f0'],
-//           // // [0.6403849, '#f7f7f7'],
-//           // [2647.7223040, 'rgba(244,165,130, .55)'],
-//           [28208.5369920, 'rgba(178,24,43, .55)'] 
-//           // [0, Highcharts.getOptions().colors[0]],
-//           // [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-//           ]
-//         },
-//       },
-//       // area: {
-//       //   fillColor: {
-//       //     linearGradient: {
-//       //       x1: 0,
-//       //       y1: 0,
-//       //       x2: 0,
-//       //       y2: 1
-//       //     },
-//       //     stops: [
-//       //   //   [0,'rgba(33, 102, 172, .55) : rgba(178,24,43, .55)']
-//       //     // [-0.8704912, '#d6604d']
-//       //     // [-0.5898474, '#4393c3'],
-//       //     // [-0.2839074, '#fddbc7'],
-//       //     // [0, 'rgba(146,197,222, .55)'],
-//       //     // [0.3573693, '#d1e5f0'],
-//       //     // [0.6403849, '#f7f7f7'],
-//       //     // [2647.7223040, 'rgba(244,165,130, .55)'],
-//       //     // [1, 'rgba(178,24,43, .55)'] 
-//       //     [0, Highcharts.getOptions().colors[0]],
-//       //     [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-//       //     ]
-//       //   },
-//       //   marker: {
-//       //     radius: 2
-//       //   },
-//       //   lineWidth: 3,
-//       //   states: {
-//       //     hover: {
-//       //       lineWidth: 2
-//       //     }
-//       //   },
-//       //   threshold: null
-//       // }
-//     },
+    plotOptions: {
+      line: {
+        fillColor: {
+          // linearGradient: {
+          //   x1: 0,
+          //   y1: 0,
+          //   x2: 0,
+          //   y2: 1
+          // },
+          stops: [
+          [-12361.2246720,'rgba(33, 102, 172, .55)'], 
+          [28208.5369920, 'rgba(178,24,43, .55)'] 
+          // [0, Highcharts.getOptions().colors[0]],
+          // [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+          ]
+        },
+      },
+    },
 
-//     series: [{
-//       type: 'area',
-//       name: 'Skin Conductivity',
-//       data: data
-//     }]
-//   });
+    series: [{
+      type: 'area',
+      name: 'Skin Conductivity',
+      data: data
+    }]
+  });
+}
+
+function rCoord() {
+  var coord = [
+    (Math.random() * 360) - 180, (Math.random() * 180) - 90
+  ]
+  return coord
+}
+
+function rDate(base) {
+  base = base || 0;
+  mx = new Date();
+  mn = new Date("2004/12/02");
+  dd = Math.round(mx - (Math.random() * (mx - mn - base)));
+  return (dd)
+}
+
+function rProp(base) {
+  base = base || [0];
+  var a = (base[0] + 180) / 360 || Math.random();
+
+  var prop = {
+    date: rDate(a * 1000),
+    nHgKg: Math.round(a * 1000)
+  }
+
+  return prop;
+}
+
+function rPoint() {
+  var coord = rCoord()
+  var point = {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: coord
+    },
+    properties: rProp(coord)
+  }
+  return point;
+}
+
+function rPoints(n) {
+  var gJson = {
+    type: "FeatureCollection",
+    features: []
+  };
+  n = n || 100;
+  for (var i = 0; i < n; i++) {
+    gJson.features.push(rPoint());
+  }
+  return gJson;
+}
+
+function cloneArray(arr) {
+  var i = arr.length;
+  var clone = [];
+  while (i--) {
+    clone[i] = arr[i];
+  }
+  return (clone);
+};
+
+function getArrayStat(o) {
+
+  if (
+    o.arr === undefined ||
+    o.arr.constructor != Array ||
+    o.arr.length === 0
+  ) return [];
+
+  if (
+    o.stat == "quantile" &&
+    o.percentile &&
+    o.percentile.constructor == Array
+  ) o.stat = "quantiles";
+
+  var arr = cloneArray(o.arr);
+  var stat = o.stat ? o.stat : "max";
+  var len_o = arr.length;
+  var len = len_o;
+
+  function sortNumber(a, b) {
+    return a - b;
+  }
+
+  opt = {
+    "max": function() {
+      var max = -Infinity;
+      var v = 0;
+      while (len--) {
+        v = arr.pop();
+        if (v > max) {
+          max = v;
+        }
+      }
+      return max;
+    },
+    "min": function() {
+      var min = Infinity;
+      while (len--) {
+        v = arr.pop();
+        if (v < min) {
+          min = v;
+        }
+      }
+      return min;
+    },
+    "sum": function() {
+      var sum = 0;
+      while (len--) {
+        sum += arr.pop();
+      }
+      return sum;
+    },
+    "mean": function() {
+      var sum = getArrayStat({
+        stat: "sum",
+        arr: arr
+      });
+      return sum / len_o;
+    },
+    "median": function() {
+      var median = getArrayStat({
+        stat: "quantile",
+        arr: arr,
+        percentile: 50
+      });
+      return median;
+    },
+    "quantile": function() {
+      arr.sort(sortNumber);
+      o.percentile = o.percentile ? o.percentile : 50;
+      index = o.percentile / 100 * (arr.length - 1);
+      if (Math.floor(index) == index) {
+        result = arr[index];
+      } else {
+        i = Math.floor(index);
+        fraction = index - i;
+        result = arr[i] + (arr[i + 1] - arr[i]) * fraction;
+      }
+      return result;
+    },
+    "quantiles": function() {
+      var quantiles = {};
+      o.percentile.forEach(function(x) {
+        var res = getArrayStat({
+          stat: "quantile",
+          arr: arr,
+          percentile: x
+        });
+        quantiles[x] = res;
+      });
+      return quantiles;
+    },
+    "distinct": function() {
+      var n = {},
+        r = [];
+
+      while (len--) {
+        if (!n[arr[len]]) {
+          n[arr[len]] = true;
+          r.push(arr[len]);
+        }
+      }
+      return r;
+    }
+  };
+  return (opt[stat](o));
+};
+
+function printLayerStat() {
+
+  var s = getLayerStat();
+
+  var elN = document.getElementById("sN");
+  var elMin = document.getElementById("sMin");
+  var elMax = document.getElementById("sMax");
+  var elPtil = document.getElementById("sPtil");
+
+  elN.innerHTML = s.n;
+  elMin.innerHTML = s.min;
+  elMax.innerHTML = s.max;
+  elPtil.innerHTML = JSON.stringify(s.ptil);
+
+}
 
 
-// }
-
-
-
-
-
-
-// function rCoord() {
-//   var coord = [
-//     (Math.random() * 360) - 180, (Math.random() * 180) - 90
-//   ]
-//   return coord
-// }
-
-// function rDate(base) {
-//   base = base || 0;
-//   mx = new Date();
-//   mn = new Date("2004/12/02");
-//   dd = Math.round(mx - (Math.random() * (mx - mn - base)));
-//   return (dd)
-// }
-
-// function rProp(base) {
-//   base = base || [0];
-//   var a = (base[0] + 180) / 360 || Math.random();
-
-//   var prop = {
-//     date: rDate(a * 1000),
-//     nHgKg: Math.round(a * 1000)
-//   }
-
-//   return prop;
-// }
-
-// function rPoint() {
-//   var coord = rCoord()
-//   var point = {
-//     type: "Feature",
-//     geometry: {
-//       type: "Point",
-//       coordinates: coord
-//     },
-//     properties: rProp(coord)
-//   }
-//   return point;
-// }
-
-// function rPoints(n) {
-//   var gJson = {
-//     type: "FeatureCollection",
-//     features: []
-//   };
-//   n = n || 100;
-//   for (var i = 0; i < n; i++) {
-//     gJson.features.push(rPoint());
-//   }
-//   return gJson;
-// }
-
-
-// function cloneArray(arr) {
-//   var i = arr.length;
-//   var clone = [];
-//   while (i--) {
-//     clone[i] = arr[i];
-//   }
-//   return (clone);
-// };
-
-// function getArrayStat(o) {
-
-//   if (
-//     o.arr === undefined ||
-//     o.arr.constructor != Array ||
-//     o.arr.length === 0
-//   ) return [];
-
-//   if (
-//     o.stat == "quantile" &&
-//     o.percentile &&
-//     o.percentile.constructor == Array
-//   ) o.stat = "quantiles";
-
-//   var arr = cloneArray(o.arr);
-//   var stat = o.stat ? o.stat : "max";
-//   var len_o = arr.length;
-//   var len = len_o;
-
-//   function sortNumber(a, b) {
-//     return a - b;
-//   }
-
-//   opt = {
-//     "max": function() {
-//       var max = -Infinity;
-//       var v = 0;
-//       while (len--) {
-//         v = arr.pop();
-//         if (v > max) {
-//           max = v;
-//         }
-//       }
-//       return max;
-//     },
-//     "min": function() {
-//       var min = Infinity;
-//       while (len--) {
-//         v = arr.pop();
-//         if (v < min) {
-//           min = v;
-//         }
-//       }
-//       return min;
-//     },
-//     "sum": function() {
-//       var sum = 0;
-//       while (len--) {
-//         sum += arr.pop();
-//       }
-//       return sum;
-//     },
-//     "mean": function() {
-//       var sum = getArrayStat({
-//         stat: "sum",
-//         arr: arr
-//       });
-//       return sum / len_o;
-//     },
-//     "median": function() {
-//       var median = getArrayStat({
-//         stat: "quantile",
-//         arr: arr,
-//         percentile: 50
-//       });
-//       return median;
-//     },
-//     "quantile": function() {
-//       arr.sort(sortNumber);
-//       o.percentile = o.percentile ? o.percentile : 50;
-//       index = o.percentile / 100 * (arr.length - 1);
-//       if (Math.floor(index) == index) {
-//         result = arr[index];
-//       } else {
-//         i = Math.floor(index);
-//         fraction = index - i;
-//         result = arr[i] + (arr[i + 1] - arr[i]) * fraction;
-//       }
-//       return result;
-//     },
-//     "quantiles": function() {
-//       var quantiles = {};
-//       o.percentile.forEach(function(x) {
-//         var res = getArrayStat({
-//           stat: "quantile",
-//           arr: arr,
-//           percentile: x
-//         });
-//         quantiles[x] = res;
-//       });
-//       return quantiles;
-//     },
-//     "distinct": function() {
-//       var n = {},
-//         r = [];
-
-//       while (len--) {
-//         if (!n[arr[len]]) {
-//           n[arr[len]] = true;
-//           r.push(arr[len]);
-//         }
-//       }
-//       return r;
-//     }
-//   };
-
-//   return (opt[stat](o));
-
-// };
+function getLayerStat() {
+  var test = map.queryRenderedFeatures({
+    layers: ["1"] 
+  });
+  var vals = [];
+  test.forEach(function(f) {
+    vals.push([
+      f.properties.time,
+      f.properties.conductance_z
+    ]);
+  })
+  var out = {
+    n: test.length,
+    max: getArrayStat({
+      arr: vals,
+      stat: 'max'
+    }),
+    min: getArrayStat({
+      arr: vals,
+      stat: 'min'
+    }),
+    ptil: getArrayStat({
+      arr: vals,
+      stat: 'quantiles',
+      percentile: [25, 50, 75]
+    })
+  }
+  return (out)
+}
 
 
 
-// function printLayerStat() {
-
-//   var s = getLayerStat();
-
-//   var elN = document.getElementById("sN");
-//   var elMin = document.getElementById("sMin");
-//   var elMax = document.getElementById("sMax");
-//   var elPtil = document.getElementById("sPtil");
-
-//   elN.innerHTML = s.n;
-//   elMin.innerHTML = s.min;
-//   elMax.innerHTML = s.max;
-//   elPtil.innerHTML = JSON.stringify(s.ptil);
-
-// }
-
-
-// function getLayerStat() {
-//   var test = map.queryRenderedFeatures({
-//     layers: ["pt1_geojson_conduct-time"] 
-//   });
-//   var vals = [];
-//   test.forEach(function(f) {
-//     vals.push([
-//       f.properties.time,
-//       f.properties.conductance_z
-//     ]);
-//   })
-//   var out = {
-//     n: test.length,
-//     max: getArrayStat({
-//       arr: vals,
-//       stat: 'max'
-//     }),
-//     min: getArrayStat({
-//       arr: vals,
-//       stat: 'min'
-//     }),
-//     ptil: getArrayStat({
-//       arr: vals,
-//       stat: 'quantiles',
-//       percentile: [25, 50, 75]
-//     })
-//   }
-//   return (out)
-// }
-
-
-
-var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/pt1_geojson_conduct-time';
+var url = 'https://raw.githubusercontent.com/gcmillar/3D-Buildings-NL/master/CHIPS_all_pts';
 
 </script>
 
-<!-- <script async defer
+<script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHTJQBq-WUoU0UgfMGgmg6UqJHuRUj6n0&callback=initialize">
 </script>
 
-<script type="text/html" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHTJQBq-WUoU0UgfMGgmg6UqJHuRUj6n0"></script> -->
-
+<script type="text/html" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHTJQBq-WUoU0UgfMGgmg6UqJHuRUj6n0"></script>
 
 </body>
 
