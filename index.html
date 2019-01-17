@@ -35,68 +35,6 @@
               bottom: 0;
               width: 100%;
             }
-            /*#pano {
-                float: left;
-                height: 100%;
-                width: 45%;
-            }*/
-            /*#menu {
-              position: absolute;
-              width: 150px;
-              top: 120px;
-              left: 5px;
-               line-height:0.8;
-                cursor: pointer;
-              text-align: center;
-          }
-          #menu h3 {
-             cursor: pointer;
-              text-align: left;
-              border: 1px solid #696969; 
-            line-height:0.9;
-            background: rgba(0, 0, 0, 0.8);;
-            color: #ffffff;
-            width: 214px;
-            padding: 10px;
-            top: 40px;
-
-            text-align: center;
-          }
-
-          #menu a {
-            background: rgba(0, 0, 0, 0.8);;
-            color: #666666;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
-            border-radius: 3px;
-            padding: 10px;
-            margin-bottom: 10px;
-            z-index: 1;
-            display: inline;
-            text-align: center;
-            padding: 0;
-            padding: 5px;
-            margin: 0;
-
-          }
-
-          #menu a:last-child {
-              border: none;
-          }
-
-          #menu a:hover {
-              background-color: rgba(0, 0, 0, 0.8);;
-              color: #404040;
-          }
-
-          #menu a.active {
-              background-color: #3E57A6;
-              color: #ffffff;
-          }
-
-          #menu a.active:hover {
-              background: #3E57A6;
-          }
-*/
             h1 {
               font-size: 10px;
               line-height: 16px;
@@ -172,7 +110,7 @@
             #github {
               position: fixed;
               bottom: 5px;
-              left: 100px;
+              left: 97px;
               fill: #D3D3D3;
             }
             .session {
@@ -219,7 +157,9 @@
             #mly {
              bottom: -320px; 
              height:58%;
-             width: 100%;}
+             width: 100%;
+           }
+
              #mly h2{
               position: relative;
              bottom: -120px; 
@@ -228,7 +168,8 @@
              text-transform: uppercase;
              font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
              font-size: 18px;
-             width: 100%;}
+             width: 100%;
+           }
 
             .colors {
               background: linear-gradient(to left, #b2182b, #f4a582, #f7f7f7, #92c5de, #2166ac);
@@ -299,16 +240,11 @@
               color: #fff;
               box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
               border-radius: 3px;
-              /*padding: 10px;*/
-              /*margin-bottom: 50px;*/
               z-index: 1;
           }
           
           #map-overlay-inner fieldset {
               border: none;
-              /*padding: 0;*/
-              /*margin: 0 0 50px;*/
-              /*z-index: 1;*/
           }
           /* Dark attribution */
           
@@ -340,7 +276,7 @@
               z-index: -1000;
           }
               
-              .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+          .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
           .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
           .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
               border-top-color: #202020;
@@ -415,8 +351,6 @@
         p {
           border-bottom:0.8px #3D3D3D;
           border-style: ridge;
-          /*position: abs;*/
-          /*border-width: 1px;*/
         }
 
 
@@ -475,26 +409,61 @@
             right: 14px;
         }
 
+        #menu {
+              position: absolute;
+              top: 100px;
+              /*left: 300px;*/
+              overflow: hidden;
+              /*background-color: rgba(0, 0, 0, 0.25);*/
+              /*color: #797979;*/
+              cursor: pointer;
+              display: inline-table;
+              text-transform: uppercase;
+          }
+
+          #menu a {
+            font-size: 10px;
+            color: #525252;
+            text-align: center;
+            padding: 10px 16px;
+            text-decoration: none;
+            position: relative;
+            display: inline-table;
+            width: 100%;
+            text-transform: uppercase;
+          }
+
+          #menu a:last-child {
+              border: none;
+          }
+
+          #menu a:hover {
+            background-color: #b1bbdb;
+            color: #797979;
+          }
+
+          #menu a.active {
+            background-color: rgba(62,87,166, 0.6);
+            color: #797979;
+          }
+
+          #menu a.active:hover {
+              background: rgba(62,87,166, 0.6);
+          }
+
         /* Navbar container */
-        .navbar {
+        /*.navbar {
           position: absolute;
-          /*width: 50%;*/
-           /*height:40%;*/
-              /*width: 150px;*/
-              /*height: 10px;*/
           top: 100px;
-          /*left: 300px;*/
           overflow: hidden;
-          /*background-color: rgba(0, 0, 0, 0.25);*/
           color: #797979;
+          cursor: pointer;
           display: inline-table;
           text-transform: uppercase;
-          /*font-family: Arial;*/
-        }
+        }*/
 
         /* Links inside the navbar */
-        .navbar a {
-          /*float: left;*/
+        /*.navbar a {
           font-size: 10px;
           color: #525252;
           text-align: center;
@@ -508,75 +477,21 @@
 
         .navbar a:last-child {
               border: none;
-              width: 100%;
-              text-transform: uppercase;
           }
 
-          .navbar a:hover {
-              background-color: #b1bbdb;
-              color: #797979;
-              width: 100%;
-              text-transform: uppercase;
-          }
-
-          .navbar a.active {
-              background-color: rgba(62,87,166, 0.6);
-              color: #797979;
-               width: 100%;
-               text-transform: uppercase;
-               /*height:40%;*/
-          }
-
-          .navbar a.active:hover {
-              background: rgba(177,187,219, 0.6);
-              width: 100%;
-              text-transform: uppercase;
-          }
-
-        
-        /* The dropdown container */
-        .dropdown {
-          float: left;
-          overflow: hidden;
+        .navbar a:hover {
+            background-color: #b1bbdb;
+            color: #797979;
         }
 
-        /* Dropdown button */
-        .dropdown .dropbtn {
-          font-size: 16px; 
-          border: none;
-          outline: none;
-          color: white;
-          padding: 14px 16px;
-          background-color: inherit;
-          font-family: inherit; /* Important for vertical align on mobile phones */
-          margin: 0; /* Important for vertical align on mobile phones */
+        .navbar a.active {
+          background-color: rgba(62,87,166, 0.6);
+          color: #797979;
         }
 
-        /* Add a red background color to navbar links on hover */
-        .navbar a:hover, .dropdown:hover .dropbtn {
-          background-color: rgba(0, 0, 0, 0.8);
-              color: #404040;
-        }
-
-        /* Dropdown content (hidden by default) */
-        .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #f9f9f9;
-          min-width: 160px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-        }
-
-        /* Links inside the dropdown */
-        .dropdown-content a {
-          float: none;
-          color: black;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-          text-align: left;
-        }
+        .navbar a.active:hover {
+            background: rgba(177,187,219, 0.6);
+        }*/
 
     </style>
 </head>
@@ -596,15 +511,15 @@
       <span class=topleft><a href="https://github.com/gcmillar/3D-Buildings-NL" title="Check me out on GitHub" alt="octocat"><img src="img/cycle-stress-logo_no_desc.png" align='middle'; width="%"></span></a></img>
       <br><br>
       <p class="outset"></p>
-      <div class='map-overlay top'> 
-        <div class='map-overlay-inner'> 
-          <fieldset id="navbar" class='navbar' style="width: 100%;
+      <!-- <div class='map-overlay top'> 
+        <div class='map-overlay-inner'>  -->
+          <nav id="menu" style="width: 100%;
            height:100%">  <h2><b>Toggle Cyclists</b></h2>
-          </fieldset>
+          </nav>
 
-        </div>
+<!--         </div>
 
-      </div>
+      </div> -->
 
 </div>
 
@@ -1050,7 +965,6 @@ map.on('load', function () {
           mly.resize();
         }
 
-
       });
 
 
@@ -1086,7 +1000,7 @@ map.once('style.load', function(e) {
     //Hide loading bar once tiles from geojson are loaded
         map.on('data', function(e) {
             if (e.dataType === 'source' && e.sourceId === 'CHIPS_all_pts') {
-                document.getElementById("navbar");
+                document.getElementById("menu");
             }
         })
 
@@ -1131,12 +1045,12 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
             this.className = '';
         } else {
-            this.className = '';
+            this.className = 'active';
             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
         }
     };
 
-    var layers = document.getElementById('navbar');
+    var layers = document.getElementById('menu');
     layers.appendChild(link);
 }
 
@@ -1200,6 +1114,8 @@ function getData() {
 
   return (vals);
 }
+
+
 
 function chartSetData() {
   data = getData();
